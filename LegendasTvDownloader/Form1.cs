@@ -44,7 +44,7 @@ namespace LegendasTvDownloader
         public string curFileName = "";
         public string curFullFileName = "";
         public static int pagina = 1;
-        public int cv = 13;
+        public int cv = 14;
         
 
         private void Form1_Load(object sender, EventArgs e)
@@ -353,7 +353,7 @@ namespace LegendasTvDownloader
                         continue;
                     }
                     //MessageBox.Show(tmp);
-                    //MessageBox.Show("Comparando: \""+tmp+"\" com \""+curFileNameN+"\""); 
+                    MessageBox.Show("Comparando: \""+tmp+"\" com \""+curFileNameN+"\""); 
                     if (tmp.Equals(curFileNameN, StringComparison.OrdinalIgnoreCase))
                     {
                         try
@@ -364,7 +364,7 @@ namespace LegendasTvDownloader
                         }
                         catch (Exception ex)
                         {
-
+                            MessageBox.Show(ex.ToString());
                         }
                         break;
                     }
@@ -464,6 +464,21 @@ namespace LegendasTvDownloader
             if (e.KeyCode == Keys.Return)
             {
                 button2.PerformClick();
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            using (WebClient webClient = new WebClient())
+            {
+                if (pictureBox1.ImageLocation == "" || pictureBox1.ImageLocation.Length == 0)
+                {
+                    MessageBox.Show("Busque algo primeiro!");
+                    return;
+                }
+
+                webClient.DownloadFile(new Uri(pictureBox1.ImageLocation), "Poster" + Path.GetExtension(pictureBox1.ImageLocation));
+                MessageBox.Show("Poster baixado com sucesso!");
             }
         }
 

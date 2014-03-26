@@ -72,10 +72,30 @@ namespace NinjaCode
                     file = file.Substring(start);
                 }
             }
+            else
+            {
+                int end = file.LastIndexOf(".");
+                if (end <= 0)
+                {
+                    return "";
+                }
+                file = file.Substring(0, end);
+            }
             return file;
         }
 
         public static string ExtractFileNameExt(this string filePath)
+        {
+            string file = filePath;
+            if (filePath.Contains("\\"))
+            {
+                int start = file.LastIndexOf(@"\") + 1;
+                file = file.Substring(start);
+            }
+            return file;
+        }
+
+        public static string ExtractExtension(this string filePath)
         {
             string file = filePath;
             if (filePath.Contains("\\"))
