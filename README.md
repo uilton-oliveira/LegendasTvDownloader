@@ -1,4 +1,4 @@
-LegendasTvDownloader
+Legendas.Tv Downloader
 ====================
 
 Descrição
