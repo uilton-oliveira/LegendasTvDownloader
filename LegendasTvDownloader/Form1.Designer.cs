@@ -122,6 +122,7 @@
             this.textBox1.Size = new System.Drawing.Size(298, 20);
             this.textBox1.TabIndex = 5;
             this.textBox1.Enter += new System.EventHandler(this.textBox1_Enter);
+            this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             this.textBox1.Leave += new System.EventHandler(this.textBox1_Leave);
             // 
             // button2
@@ -162,7 +163,7 @@
             this.Controls.Add(this.checkedListBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Pesquisando, aguarde...";
+            this.Text = "Legendas.tv Downloader - v1.3";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

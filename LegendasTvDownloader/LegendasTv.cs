@@ -36,7 +36,9 @@ namespace LegendasTvDownloader
                     page = "/page:"+pagina;
                 }
 
+                //MessageBox.Show("Iniciando busca");
                 string html = webClient.DownloadString("http://legendas.tv/util/carrega_legendas_busca/termo:" + fileSearch + "/id_idioma:1" + page);
+                //MessageBox.Show("busca ok1");
                 string ret = html.SearchAndCut("<div class=\"middle \"> ", "<div class=\"clear\">").text; // inicio e fim de onde fica as legendas
                 bool mais = html.Contains("load_more");
                 string id = "";
@@ -49,6 +51,7 @@ namespace LegendasTvDownloader
                 }
                 bool foto = false;
 
+                //MessageBox.Show("entrou while");
                 while (ret2.pos != -1)
                 {
                     sub = new legendas();
@@ -64,8 +67,10 @@ namespace LegendasTvDownloader
 
                     if (popularFotoDesc && !foto)
                     {
+                        //MessageBox.Show("Baixando foto...");
                         foto = true;
                         string html2 = webClient.DownloadString("http://legendas.tv/download/" + id);
+                        //MessageBox.Show("foto ok1");
                         NinjaCode.Useful.search ret3 = html2.SearchAndCut("<section class=\"first\">", "</section>");
                         string img = "http://legendas.tv/" + ret3.text.SearchAndCut("<img src=\"", "\"").text;
                         string titulo = ret3.text.SearchAndCut("<h5>", "</h5>").text;

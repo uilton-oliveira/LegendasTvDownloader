@@ -6,7 +6,8 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
-using System.Net;   
+using System.Net;
+using System.Windows.Forms;   
 
 namespace NinjaCode
 {
@@ -49,6 +50,41 @@ namespace NinjaCode
             public bool match;
         }
 
+        public static string ExtractFileName(this string filePath)
+        {
+            string file = filePath;
+            //MessageBox.Show("ExtractFileName: " + filePath);
+            if (file.Contains(@"\"))
+            {
+                int start = file.LastIndexOf(@"\") + 1;
+                if (file.Contains("."))
+                {
+                    int end = file.LastIndexOf(".") - start;
+                    if (end <= 0)
+                    {
+                        //MessageBox.Show("Pasta!!!");
+                        return "";
+                    }
+                    file = file.Substring(start, end);
+                }
+                else
+                {
+                    file = file.Substring(start);
+                }
+            }
+            return file;
+        }
+
+        public static string ExtractFileNameExt(this string filePath)
+        {
+            string file = filePath;
+            if (filePath.Contains("\\"))
+            {
+                int start = file.LastIndexOf(@"\") + 1;
+                file = file.Substring(start);
+            }
+            return file;
+        }
 
         public static subtitles GetInfoSubtitles(string filePath)
         {
