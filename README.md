@@ -13,6 +13,13 @@ Este programa contém algorítimos pra identificar o nome original do filme ou s
 
 Fiz este programa em apenas 2 dias, se gostarem ou encontraram problemas, comentem!
 
+1.5
+-----------
+- Corrigido travamento ao baixar legendas simultaneamentes.
+- Adicionado suporte pra baixar multiplas legendas ao mesmo tempo.
+- Adicionado algoritimo pra detectar se o arquivo com mesmo nome já existe e adicionar (1), (2)...etc.
+- Programa não irá mais finalizar sozinho após baixar a legenda (caso tenha aberto pelo menu de contexto), pra caso queira tentar baixar outros...
+
 1.4
 -----------
 - Adicionado opção para baixar Poster.
