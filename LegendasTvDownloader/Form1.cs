@@ -44,7 +44,7 @@ namespace LegendasTvDownloader
         public string curFileName = "";
         public string curFullFileName = "";
         public static int pagina = 1;
-        public int cv = 14;
+        public int cv = 15;
         
 
         private void Form1_Load(object sender, EventArgs e)
@@ -318,21 +318,36 @@ namespace LegendasTvDownloader
             }
         }
 
+
+        public static int downCount = 0;
+        public static int downCountPos = 0;
         public AsyncCompletedEventHandler DownloadFileCompleted(string filename)
         {
-            button1.Enabled = true;
+            
+            //MessageBox.Show("downCountPos: " + downCountPos + " / downCount:" + downCount);
             Action<object,AsyncCompletedEventArgs> action = (sender,e) =>
             {
+                downCountPos++;
                 var _filename = filename;
                 if (curFileName == "")
                 {
-                    MessageBox.Show("Baixado com sucesso!");
+                    if (downCountPos == downCount)
+                    {
+                        button1.Enabled = true;
+                        MessageBox.Show("Baixado(s) com sucesso!");
+                    }
                     return;
                 }
 
                 if (e.Error != null)
                 {
-                    throw e.Error;
+                    if (downCountPos == downCount)
+                    {
+                        button1.Enabled = true;
+                        MessageBox.Show("Baixado(s) com sucesso!");
+                    }
+                    //throw e.Error;
+                    return;
                 }
 
                 //MessageBox.Show("0");
@@ -353,12 +368,27 @@ namespace LegendasTvDownloader
                         continue;
                     }
                     //MessageBox.Show(tmp);
-                    MessageBox.Show("Comparando: \""+tmp+"\" com \""+curFileNameN+"\""); 
+                    //MessageBox.Show("Comparando: \""+tmp+"\" com \""+curFileNameN+"\""); 
                     if (tmp.Equals(curFileNameN, StringComparison.OrdinalIgnoreCase))
                     {
                         try
                         {
-                            entry.WriteToFile(path, ExtractOptions.ExtractFullPath);
+                            if (File.Exists(path))
+                            {
+                                int z = 1;
+                                string tmp3 = "";
+                                do
+                                {
+                                    tmp3 = curDir + "\\" + entry.FilePath.ExtractFileName().RemoveAccents() + "(" + z + ")" + Path.GetExtension(path);
+                                    z++;
+                                } while (File.Exists(tmp3));
+
+                                entry.WriteToFile(tmp3);
+                            }
+                            else
+                            {
+                                entry.WriteToFile(path);
+                            }
                             fileStream.Close();
                             File.Delete(_filename);
                         }
@@ -371,44 +401,98 @@ namespace LegendasTvDownloader
                     //entry.extr
                 }
                 fileStream.Close();
-
-                MessageBox.Show("Baixado com sucesso!");
-                Application.Exit();
+                if (downCountPos == downCount)
+                {
+                    button1.Enabled = true;
+                    MessageBox.Show("Baixado(s) com sucesso!");
+                }
+                //Application.Exit();
             };
             return new AsyncCompletedEventHandler(action);
         }
 
+        public void btn1Thread()
+        {
+            downCount = 0;
+            downCountPos = 0;
+
+            if (checkedListBox1.Items.Count == 0)
+            {
+                MessageBox.Show("Busque algo primeiro!");
+                button1.Enabled = true;
+                return;
+            }
+            downCount = checkedListBox1.CheckedIndices.Count;
+
+            foreach (int ic in checkedListBox1.CheckedIndices)
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    string url = founds[ic].download;
+                    var stream = webClient.OpenRead(url);
+
+                    string header_contentDisposition = webClient.ResponseHeaders["content-disposition"];
+                    string filename = new ContentDisposition(header_contentDisposition).FileName;
+                    stream.Close();
+                    if (curFullFileName != "")
+                    {
+                        filename = curFileName + Path.GetExtension(filename);
+                        if (File.Exists(filename))
+                        {
+                            int z = 1;
+                            string tmp3 = "";
+                            do
+                            {
+                                filename = curFileName + "(" + z + ")" + Path.GetExtension(filename);
+                                z++;
+                            } while (File.Exists(tmp3));
+
+                        }
+                    }
+                    else
+                    {
+                        if (File.Exists(filename))
+                        {
+                            int z = 1;
+                            string tmp3 = "";
+                            do
+                            {
+                                filename = filename.ExtractFileName() + "(" + z + ")" + Path.GetExtension(filename);
+                                z++;
+                            } while (File.Exists(tmp3));
+
+                        }
+                    }
+                    //MessageBox.Show("Baixando: " + url + " ("+filename+")");
+                    try
+                    {
+                        webClient.DownloadFileCompleted += DownloadFileCompleted(filename);
+                        webClient.DownloadFileAsync(new Uri(url), filename);
+                        //webClient.DownloadFile(new Uri(url), filename);
+                        //webClient.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Exception: " + ex.ToString());
+                    }
+                }
+            }
+            //webClient.Dispose();
+
+            button1.Enabled = true;
+            //MessageBox.Show();
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             button1.Enabled = false;
-            using (WebClient webClient = new WebClient())
-            {
-                if (checkedListBox1.Items.Count == 0)
-                {
-                    MessageBox.Show("Busque algo primeiro!");
-                    button1.Enabled = true;
-                    return;
-                }
-                string url = founds[checkedListBox1.CheckedIndices[0]].download;
-                webClient.OpenRead(url);
-
-                string header_contentDisposition = webClient.ResponseHeaders["content-disposition"];
-                string filename = new ContentDisposition(header_contentDisposition).FileName;
-                if (curFullFileName != "")
-                {
-                    filename = curFileName + Path.GetExtension(filename);
-                }
-                webClient.DownloadFileCompleted += DownloadFileCompleted(filename);
-                webClient.DownloadFileAsync(new Uri(url), filename);
-            }
-            //MessageBox.Show();
+            new Thread(new ThreadStart(btn1Thread)).Start();
         }
 
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            if (e.NewValue == CheckState.Checked)
-                for (int ix = 0; ix < checkedListBox1.Items.Count; ++ix)
-                    if (e.Index != ix) checkedListBox1.SetItemChecked(ix, false);
+            //if (e.NewValue == CheckState.Checked)
+              //  for (int ix = 0; ix < checkedListBox1.Items.Count; ++ix)
+                //    if (e.Index != ix) checkedListBox1.SetItemChecked(ix, false);
         }
 
 

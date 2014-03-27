@@ -95,17 +95,6 @@ namespace NinjaCode
             return file;
         }
 
-        public static string ExtractExtension(this string filePath)
-        {
-            string file = filePath;
-            if (filePath.Contains("\\"))
-            {
-                int start = file.LastIndexOf(@"\") + 1;
-                file = file.Substring(start);
-            }
-            return file;
-        }
-
         public static subtitles GetInfoSubtitles(string filePath)
         {
             using (WebClient webClient = new WebClient())
