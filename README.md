@@ -13,6 +13,15 @@ Este programa contém algorítimos pra identificar o nome original do filme ou s
 
 Fiz este programa em apenas 2 dias, se gostarem ou encontraram problemas, comentem!
 
+1.6
+-----------
+- Corrigido alguns bugs.
+- Adicionado suporte para mais um mecanismo de busca: LegendasBrasil.com.br 
+
+OBS 1: LegendasBrasil apenas para busca automática pelo menu de contexto, manual continua apenas o legendas.tv, usado o mesmo método que usam no software deles
+
+OBS 2: Legendas.tv tem prioridade no método de detecção da seleção automática de melhor legenda.
+
 1.5
 -----------
 - Corrigido travamento ao baixar legendas simultaneamentes.
