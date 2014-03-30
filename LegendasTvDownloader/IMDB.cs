@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NinjaCode;
 using System.Net;
 using System.Windows.Forms;
 
-namespace IMDB
+namespace LegendasTvDownloader
 {
     public static class IMDB
     {
@@ -18,10 +17,10 @@ namespace IMDB
             {
                 webClient.Encoding = Encoding.UTF8;
                 string tmpHtml = webClient.DownloadString(findt);
-                NinjaCode.Useful.search first = tmpHtml.SearchAndCut("<td class=\"result_text\"> <a href=\"", "/a>");
+                Useful.search first = tmpHtml.SearchAndCut("<td class=\"result_text\"> <a href=\"", "/a>");
                 if (first.pos >= 0)
                 {
-                    NinjaCode.Useful.search ftitle = first.text.SearchAndCut(">", "<");
+                    Useful.search ftitle = first.text.SearchAndCut(">", "<");
                     if (ftitle.pos >= 0)
                     {
                         // primeira página do imdb mostra o nome em português, comparar pra ver se é o mesmo que estamos buscando, se for abrir a página e pegar o original title
@@ -29,10 +28,10 @@ namespace IMDB
                         {
                             string url = "http://www.imdb.com" + first.text.SearchAndCut("", "\"").text;
                             string tmpHtml2 = webClient.DownloadString(url); // abrir a pagina de resultado pra pegar o original title
-                            NinjaCode.Useful.search sotitle = tmpHtml2.SearchAndCut("<span class=\"title-extra\" itemprop=\"name\">", "</span>");
+                            Useful.search sotitle = tmpHtml2.SearchAndCut("<span class=\"title-extra\" itemprop=\"name\">", "</span>");
                             if (sotitle.pos >= 0)
                             {
-                                NinjaCode.Useful.search otitle = sotitle.text.SearchAndCut("\"", "\"");
+                                Useful.search otitle = sotitle.text.SearchAndCut("\"", "\"");
                                 if (otitle.pos >= 0)
                                 {
                                     return otitle.text.Replace(":", " ");

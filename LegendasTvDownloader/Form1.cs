@@ -18,10 +18,9 @@ using System.IO;
 using System.IO.Compression;
 using System.Globalization;
 
-using NinjaCode;
 using System.Diagnostics;
 using System.Reflection;
-using IMDB;
+using ICSharpCode.SharpZipLib.Zip;
 
 namespace LegendasTvDownloader
 {
@@ -40,11 +39,11 @@ namespace LegendasTvDownloader
             InitializeComponent();
         }
 
-        Dictionary<int, LegendasTv.legendas> founds = new Dictionary<int, LegendasTv.legendas>();
+        Dictionary<int, Useful.legendas> founds = new Dictionary<int, Useful.legendas>();
         public string curFileName = "";
         public string curFullFileName = "";
         public static int pagina = 1;
-        public int cv = 15;
+        public int cv = 16;
         
 
         private void Form1_Load(object sender, EventArgs e)
@@ -100,7 +99,7 @@ namespace LegendasTvDownloader
                 fileSearch = Regex.Replace(fileSearch, @"\s+", " "); // remover espaços duplos
                 this.Invoke(new Action(() => this.Text = fileSearch));
                 bool loadFoto = pagina <= 1 ? true : false;
-                List<LegendasTv.legendas> list = LegendasTv.Buscar(fileSearch, loadFoto, pagina);
+                List<Useful.legendas> list = LegendasTv.Buscar(fileSearch, loadFoto, pagina);
                 if (!list.Any())
                 {
                     MessageBox.Show("Nenhuma legenda encontrada para: " + fileSearch);
@@ -121,7 +120,7 @@ namespace LegendasTvDownloader
                     this.Invoke(new Action(() => this.Text = list[0].titulo));
                 }
 
-                foreach (LegendasTv.legendas leg in list)
+                foreach (Useful.legendas leg in list)
                 {
                     CheckState check = CheckState.Unchecked;
                     if (checkedListBox1.Items.Count == 0)
@@ -145,6 +144,13 @@ namespace LegendasTvDownloader
             {
                 MessageBox.Show(ex.ToString() + ": " + ex.Message);
                 // log errors
+            }
+        }
+
+
+        public void CheckedListBox1Clear() {
+            foreach (int index in checkedListBox1.CheckedIndices) {
+                checkedListBox1.Invoke(new Action(() => checkedListBox1.SetItemChecked(index, false)));
             }
         }
 
@@ -195,16 +201,18 @@ namespace LegendasTvDownloader
                 group = group.Substring(group.LastIndexOf(".") + 1).ToLower();
 
 
+                Useful.subtitles sub = Useful.GetInfoSubtitles(curFullFileName);
+                
+
 
                 // verificar primeiro se é seriado pois é verificação local, filme usa internet...
-                NinjaCode.Useful.series serie = file.extractSerieName();
+                Useful.series serie = file.extractSerieName();
                 if (serie.match) // é seriado
                 {
                     file = serie.searchText;
                 }
                 else // é filme
                 {
-                    NinjaCode.Useful.subtitles sub = NinjaCode.Useful.GetInfoSubtitles(curFullFileName);
                     if (sub.resultado)
                     {
                         // extrair do subtitles.com
@@ -227,7 +235,7 @@ namespace LegendasTvDownloader
                 textBox1.Invoke(new Action(() => textBox1.Text = fileSearch));
 
 
-                List<LegendasTv.legendas> list = LegendasTv.Buscar(fileSearch, true, 1);
+                List<Useful.legendas> list = LegendasTv.Buscar(fileSearch, true, 1);
                 if (!list.Any())
                 {
                     if ((fileSearch = file.GetOriginalTitleImdb()) != "")
@@ -239,6 +247,7 @@ namespace LegendasTvDownloader
                         list = LegendasTv.Buscar(fileSearch, true, 1);
                     }
                 }
+                list.AddRange(LegendasBrasil.Buscar(sub.hash, false));
 
                 this.Invoke(new Action(() => this.Text = title2));
 
@@ -263,20 +272,36 @@ namespace LegendasTvDownloader
                 //MessageBox.Show("Resolution: " + resolution +"\nGroup: " + group);
                 bool perfect = false;
                 int resFound = 0;
+                bool legtv = false;
+                bool legbrasil = false;
 
-                foreach (LegendasTv.legendas leg in list)
+                foreach (Useful.legendas leg in list)
                 {
+                    bool isLegtv = leg.serviceName == "Legendas.tv";
+                    bool isLegbr = leg.serviceName == "LegendasBrasil";
                     CheckState check = CheckState.Unchecked;
                     if (checkedListBox1.Items.Count == 0)
                     {
                         check = CheckState.Checked;
                     }
-                    if ((resolution != "" && leg.nome.ToLower().Contains(resolution)) || (group != "" && leg.nome.ToLower().Contains(group)))
+                    if (isLegbr)
+                    {
+                        if (!legbrasil && (!legtv || !perfect))
+                        {
+                            check = CheckState.Checked;
+                            legbrasil = true;
+                            CheckedListBox1Clear();
+                        }
+                    }
+                    else if ((resolution != "" && leg.nome.ToLower().Contains(resolution)) || (group != "" && leg.nome.ToLower().Contains(group)))
                     {
                         if (group != "" && leg.nome.ToLower().Contains(group))
                         {
                             check = CheckState.Checked;
+                            CheckedListBox1Clear();
                             perfect = true;
+                            legtv = isLegtv;
+                            legbrasil = isLegbr;
                         }
                         if (resolution != "" && leg.nome.ToLower().Contains(resolution))
                         {
@@ -285,6 +310,10 @@ namespace LegendasTvDownloader
                                 if (leg.nome.ToLower().Contains(group))
                                 {
                                     check = CheckState.Checked;
+                                    CheckedListBox1Clear();
+                                    legtv = isLegtv;
+                                    legbrasil = isLegbr;
+
                                 }
                             }
                             else
@@ -292,14 +321,20 @@ namespace LegendasTvDownloader
                                 if (resFound == 0)
                                 {
                                     check = CheckState.Checked;
+                                    CheckedListBox1Clear();
+                                    legtv = isLegtv;
+                                    legbrasil = isLegbr;
+
                                 }
                             }
                             resFound++;
                         }
                     }
                     founds[checkedListBox1.Items.Count] = leg;
-                    checkedListBox1.Invoke(new Action(() => checkedListBox1.Items.Add(leg.nome, check)));
+                    checkedListBox1.Invoke(new Action(() => checkedListBox1.Items.Add("["+leg.serviceName+"] "+ leg.nome, check)));
                 }
+
+                checkedListBox1.Invoke(new Action(() => checkedListBox1.ClearSelected()));
 
                 button1.Enabled = true;
                 button2.Enabled = true;
@@ -350,57 +385,121 @@ namespace LegendasTvDownloader
                     return;
                 }
 
-                //MessageBox.Show("0");
-                FileStream fileStream = new FileStream(_filename, FileMode.Open, FileAccess.Read);
-                //MessageBox.Show("1: " + _filename);
-                RarArchive archive = RarArchive.Open(fileStream, RarOptions.None);
-                string curDir = Directory.GetCurrentDirectory();
-                string curFileNameN = curFileName;
-                //MessageBox.Show("2: " + curDir);
-                foreach (RarArchiveEntry entry in archive.Entries)
+                if (_filename.EndsWith(".zip".ToLower()))
                 {
-                    //MessageBox.Show("3: " + entry.FilePath.ExtractFileNameExt());
-                    string path = curDir + "\\" + entry.FilePath.ExtractFileNameExt().RemoveAccents();//Path.Combine(curDir, entry.FilePath.ExtractFileNameExt());
-                    //MessageBox.Show("4: " + path);
-                    string tmp = entry.FilePath.ExtractFileName().RemoveAccents();
-                    if (tmp == "")
+                    using (ZipInputStream s = new ZipInputStream(File.OpenRead(_filename)))
                     {
-                        continue;
-                    }
-                    //MessageBox.Show(tmp);
-                    //MessageBox.Show("Comparando: \""+tmp+"\" com \""+curFileNameN+"\""); 
-                    if (tmp.Equals(curFileNameN, StringComparison.OrdinalIgnoreCase))
-                    {
-                        try
-                        {
-                            if (File.Exists(path))
-                            {
-                                int z = 1;
-                                string tmp3 = "";
-                                do
-                                {
-                                    tmp3 = curDir + "\\" + entry.FilePath.ExtractFileName().RemoveAccents() + "(" + z + ")" + Path.GetExtension(path);
-                                    z++;
-                                } while (File.Exists(tmp3));
 
-                                entry.WriteToFile(tmp3);
-                            }
-                            else
-                            {
-                                entry.WriteToFile(path);
-                            }
-                            fileStream.Close();
-                            File.Delete(_filename);
-                        }
-                        catch (Exception ex)
+                        ZipEntry theEntry;
+                        while ((theEntry = s.GetNextEntry()) != null)
                         {
-                            MessageBox.Show(ex.ToString());
+
+                            Console.WriteLine(theEntry.Name);
+
+                            string directoryName = Path.GetDirectoryName(theEntry.Name);
+                            string fileName = theEntry.Name.ExtractFileName();
+
+
+                            string curDir = Directory.GetCurrentDirectory();
+                            string path = curDir + "\\" + theEntry.Name.ExtractFileNameExt().RemoveAccents();
+
+                            if (fileName.Equals(curFileName, StringComparison.OrdinalIgnoreCase))
+                            {
+                                if (fileName != String.Empty)
+                                {
+                                    string extractPath = path;
+                                    if (File.Exists(extractPath))
+                                    {
+                                        int z = 1;
+                                        do
+                                        {
+                                            extractPath = curDir + "\\" + theEntry.Name.ExtractFileName().RemoveAccents() + "(" + z + ")" + Path.GetExtension(path);
+                                            z++;
+                                        } while (File.Exists(extractPath));
+
+                                    }
+
+                                    using (FileStream streamWriter = File.Create(extractPath))
+                                    {
+
+                                        int size = 2048;
+                                        byte[] data = new byte[2048];
+                                        while (true)
+                                        {
+                                            size = s.Read(data, 0, data.Length);
+                                            if (size > 0)
+                                            {
+                                                streamWriter.Write(data, 0, size);
+                                            }
+                                            else
+                                            {
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    File.Delete(_filename);
+                                }
+                            }
                         }
-                        break;
                     }
-                    //entry.extr
+ 
                 }
-                fileStream.Close();
+                else if (_filename.EndsWith(".rar".ToLower()))
+                {
+                    //MessageBox.Show("0");
+                    FileStream fileStream = new FileStream(_filename, FileMode.Open, FileAccess.Read);
+                    //MessageBox.Show("1: " + _filename);
+
+                    RarArchive archive = RarArchive.Open(fileStream, RarOptions.None);
+                    string curDir = Directory.GetCurrentDirectory();
+                    string curFileNameN = curFileName;
+                    //MessageBox.Show("2: " + curDir);
+                    foreach (RarArchiveEntry entry in archive.Entries)
+                    {
+                        //MessageBox.Show("3: " + entry.FilePath.ExtractFileNameExt());
+                        string path = curDir + "\\" + entry.FilePath.ExtractFileNameExt().RemoveAccents();//Path.Combine(curDir, entry.FilePath.ExtractFileNameExt());
+                        //MessageBox.Show("4: " + path);
+                        string tmp = entry.FilePath.ExtractFileName().RemoveAccents();
+                        if (tmp == "")
+                        {
+                            continue;
+                        }
+                        //MessageBox.Show(tmp);
+                        //MessageBox.Show("Comparando: \""+tmp+"\" com \""+curFileNameN+"\""); 
+                        if (tmp.Equals(curFileNameN, StringComparison.OrdinalIgnoreCase))
+                        {
+                            try
+                            {
+                                if (File.Exists(path))
+                                {
+                                    int z = 1;
+                                    string tmp3 = "";
+                                    do
+                                    {
+                                        tmp3 = curDir + "\\" + entry.FilePath.ExtractFileName().RemoveAccents() + "(" + z + ")" + Path.GetExtension(path);
+                                        z++;
+                                    } while (File.Exists(tmp3));
+
+                                    entry.WriteToFile(tmp3);
+                                }
+                                else
+                                {
+                                    entry.WriteToFile(path);
+                                }
+                                fileStream.Close();
+                                File.Delete(_filename);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.ToString());
+                            }
+                            break;
+                        }
+                        //entry.extr
+                    }
+                    fileStream.Close();
+                }
                 if (downCountPos == downCount)
                 {
                     button1.Enabled = true;

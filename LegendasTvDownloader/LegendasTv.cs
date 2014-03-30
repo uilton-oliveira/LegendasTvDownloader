@@ -3,33 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net;
-using NinjaCode;
-using System.Windows.Forms;
 
 namespace LegendasTvDownloader
 {
     public static class LegendasTv
     {
-        public struct legendas
-        {
-            public string id;
-            public string nome;
-            public string titulo;
-            public string download;
-            public string fotoUrl;
-            public string descricao;
-            public bool maisPagina;
+        
 
-        }
-
-        public static List<legendas> Buscar(string fileSearch, bool popularFotoDesc, int pagina = 0)
+        public static List<Useful.legendas> Buscar(string fileSearch, bool popularFotoDesc, int pagina = 0)
         {
             using (WebClient webClient = new WebClient())
             {
                 webClient.Encoding = Encoding.UTF8;
 
-                legendas sub;
-                List<legendas> list = new List<legendas>();
+                Useful.legendas sub;
+                List<Useful.legendas> list = new List<Useful.legendas>();
                 string page = "";
                 if (pagina > 1)
                 {
@@ -44,17 +32,19 @@ namespace LegendasTvDownloader
                 string id = "";
                 string nome;
                 int startPos = 0;
-                NinjaCode.Useful.search ret2 = ret.SearchAndCut("<div class=\"f_left\"><p><a href=\"", "</a>", startPos);
+                Useful.search ret2 = ret.SearchAndCut("<div class=\"f_left\"><p><a href=\"", "</a>", startPos);
                 if (ret2.pos == -1)
                 {
-                    return new List<legendas>();
+                    return new List<Useful.legendas>();
                 }
                 bool foto = false;
+
+                string serviceName = "Legendas.tv";
 
                 //MessageBox.Show("entrou while");
                 while (ret2.pos != -1)
                 {
-                    sub = new legendas();
+                    sub = new Useful.legendas();
                     sub.maisPagina = mais;
                     id = ret2.text.SearchAndCut("download/", "/").text;
                     nome = ret2.text.SearchAndCut(">", "").text;
@@ -62,6 +52,7 @@ namespace LegendasTvDownloader
                     sub.id = id;
                     sub.nome = nome;
                     sub.download = "http://legendas.tv/downloadarquivo/" + id;
+                    sub.serviceName = serviceName;
 
                     startPos = ret2.pos;
 
@@ -71,7 +62,7 @@ namespace LegendasTvDownloader
                         foto = true;
                         string html2 = webClient.DownloadString("http://legendas.tv/download/" + id);
                         //MessageBox.Show("foto ok1");
-                        NinjaCode.Useful.search ret3 = html2.SearchAndCut("<section class=\"first\">", "</section>");
+                        Useful.search ret3 = html2.SearchAndCut("<section class=\"first\">", "</section>");
                         string img = "http://legendas.tv/" + ret3.text.SearchAndCut("<img src=\"", "\"").text;
                         string titulo = ret3.text.SearchAndCut("<h5>", "</h5>").text;
                         string desc = ret3.text.SearchAndCut("<p>", "</p>").text.Replace("<br>", "\n").Replace("<br/>", "\n").Replace("<br />", "\n");

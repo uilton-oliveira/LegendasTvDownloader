@@ -7,9 +7,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Net;
-using System.Windows.Forms;   
+using System.Windows.Forms;
 
-namespace NinjaCode
+namespace LegendasTvDownloader
 {
     public static class Useful
     {
@@ -48,6 +48,19 @@ namespace NinjaCode
             public string episode;
             public string searchText;
             public bool match;
+        }
+
+        public struct legendas
+        {
+            public string id;
+            public string nome;
+            public string titulo;
+            public string download;
+            public string fotoUrl;
+            public string descricao;
+            public bool maisPagina;
+            public string serviceName;
+
         }
 
         public static string ExtractFileName(this string filePath)
@@ -102,6 +115,7 @@ namespace NinjaCode
                 subtitles sub = new subtitles();
                 webClient.Encoding = Encoding.UTF8;
                 string hash = ToHexadecimal(ComputeMovieHash(filePath));
+                //MessageBox.Show("Hash: " + hash);
                 string html = webClient.DownloadString("http://www.getsubtitle.com/webService/downloadManager/get_movie_by_hash.php?hash=" + hash);
                 if (!html.StartsWith("10000000")) // 10000000 = não encontrado
                 {
@@ -242,6 +256,19 @@ namespace NinjaCode
             for (int index = 0; index < bytes.Length; ++index)
                 stringBuilder.Append(bytes[index].ToString("x2"));
             return ((object)stringBuilder).ToString();
+        }
+
+
+        public static string Base64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
+        }
+
+        public static string Base64Decode(string base64EncodedData)
+        {
+            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
     }
 }

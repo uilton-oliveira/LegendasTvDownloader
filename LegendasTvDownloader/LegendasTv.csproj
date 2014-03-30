@@ -53,6 +53,9 @@
     <ApplicationIcon>bandeira.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>.\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="NUnrar.3.5">
       <HintPath>.\NUnrar.3.5.dll</HintPath>
     </Reference>
@@ -75,6 +78,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="IMDB.cs" />
+    <Compile Include="LegendasBrasil.cs" />
     <Compile Include="LegendasTv.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
