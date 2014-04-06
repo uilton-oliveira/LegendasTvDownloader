@@ -43,7 +43,7 @@ namespace LegendasTvDownloader
         public string curFileName = "";
         public string curFullFileName = "";
         public static int pagina = 1;
-        public int cv = 16;
+        public int cv = 17;
         
 
         private void Form1_Load(object sender, EventArgs e)
@@ -387,6 +387,7 @@ namespace LegendasTvDownloader
 
                 if (_filename.EndsWith(".zip".ToLower()))
                 {
+                    bool delete = false;
                     using (ZipInputStream s = new ZipInputStream(File.OpenRead(_filename)))
                     {
 
@@ -437,13 +438,15 @@ namespace LegendasTvDownloader
                                             }
                                         }
                                     }
-
-                                    File.Delete(_filename);
+                                    delete = true;
                                 }
                             }
                         }
                     }
- 
+                    if (delete)
+                    {
+                        File.Delete(_filename);
+                    }
                 }
                 else if (_filename.EndsWith(".rar".ToLower()))
                 {
