@@ -13,6 +13,10 @@ Este programa contém algorítimos pra identificar o nome original do filme ou s
 
 Fiz este programa em apenas 2 dias, se gostarem ou encontraram problemas, comentem!
 
+1.7
+-----------
+- Corrigido crash causado ao baixar legenda via LegendasBrasil.
+
 1.6
 -----------
 - Corrigido alguns bugs.
