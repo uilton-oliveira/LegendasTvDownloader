@@ -43,7 +43,7 @@ namespace LegendasTvDownloader
         public string curFileName = "";
         public string curFullFileName = "";
         public static int pagina = 1;
-        public int cv = 17;
+        public int cv = 18;
         
 
         private void Form1_Load(object sender, EventArgs e)
@@ -532,6 +532,8 @@ namespace LegendasTvDownloader
                 {
                     string url = founds[ic].download;
                     var stream = webClient.OpenRead(url);
+
+                    //MessageBox.Show(url);
 
                     string header_contentDisposition = webClient.ResponseHeaders["content-disposition"];
                     string filename = new ContentDisposition(header_contentDisposition).FileName;
