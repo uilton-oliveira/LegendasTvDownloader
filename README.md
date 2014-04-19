@@ -71,7 +71,7 @@ OBS 2: Legendas.tv tem prioridade no método de detecção da seleção automát
 Fotos
 -----------
 
-![qjlxmi9](https://f.cloud.github.com/assets/7059651/2514425/dbd9501e-b438-11e3-823d-08d87f3ad885.png)
+![qjlxmi9](http://i.imgur.com/nMXrIBN.png)
 ![mfiktup](https://f.cloud.github.com/assets/7059651/2514293/bd52fbd2-b437-11e3-9ed6-478533167105.png)
 
 
