@@ -13,6 +13,11 @@ Este programa contém algorítimos pra identificar o nome original do filme ou s
 
 Fiz este programa em apenas 2 dias, se gostarem ou encontraram problemas, comentem!
 
+1.9
+-----------
+- Adicionado nova entrada no botão direito: "Baixar melhor legenda (suporta multiplos)" que irá baixar a melhor legenda automaticamente, suporta busca selecionando vários arquivos também!!
+- Renomeado entrada de "Buscar via Legendas.tv" para "Buscar legenda"
+
 1.8
 -----------
 - Ao pressionar o botão 'Enter' irá automaticamente baixar as legendas selecionadas.
