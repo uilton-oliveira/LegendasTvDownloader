@@ -176,7 +176,7 @@
             this.Controls.Add(this.checkedListBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Legendas.tv Downloader - v1.9";
+            this.Text = "Legendas.tv Downloader - v2.0";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);

@@ -110,7 +110,7 @@ namespace LegendasTvDownloader
 
         public static subtitles GetInfoSubtitles(string filePath)
         {
-            using (WebClient webClient = new WebClient())
+            using (WebClient webClient = new CustomWebClient())
             {
                 subtitles sub = new subtitles();
                 webClient.Encoding = Encoding.UTF8;

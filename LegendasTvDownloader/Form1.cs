@@ -52,7 +52,7 @@ namespace LegendasTvDownloader
         public string curFileName = "";
         public string curFullFileName = "";
         public static int pagina = 1;
-        public int cv = 19;
+        public int cv = 20;
         public static bool hide = false;
         public static string serviceName;
         private readonly object syncLock = new object();
@@ -73,7 +73,7 @@ namespace LegendasTvDownloader
         
         public void VersionThread()
         {
-            using (WebClient webClient = new WebClient())
+            using (WebClient webClient = new CustomWebClient())
             {
                 webClient.Encoding = Encoding.UTF8;
                 string html = webClient.DownloadString("http://www.garenaworld.com/images/g_master/checker/lgtv.txt");
@@ -571,107 +571,163 @@ namespace LegendasTvDownloader
             return new AsyncCompletedEventHandler(action);
         }
 
+        string GetWebPageContent(string url, int bytesToGet)
+        {
+            string result = string.Empty;
+            HttpWebRequest request;
+            request = WebRequest.Create(url) as HttpWebRequest;
+
+            //get first 1000 bytes
+            request.AddRange(0, bytesToGet - 1);
+
+            // the following code is alternative, you may implement the function after your needs
+            using (WebResponse response = request.GetResponse())
+            {
+                using (StreamReader sr = new StreamReader(response.GetResponseStream()))
+                {
+                    result = sr.ReadToEnd();
+                }
+            }
+            return result;
+        }
+
+
+
         public void btn1Thread()
         {
             btn1Thread("");
         }
         public void btn1Thread(String firName)
         {
-            string locFullFileName;
-            string locFileName;
-            if (firName != "")
+            try
             {
-                locFullFileName = firName;
-                locFileName = firName.ExtractFileName();
-            }
-            else
-            {
-                locFullFileName = curFullFileName;
-                locFileName = curFileName;
-            }
-
-            downCount = 0;
-            downCountPos = 0;
-
-            if (checkedListBox1.Items.Count == 0)
-            {
-                ShowMessage("Busque algo primeiro!");
-                button1.Enabled = true;
-                if (hide)
+                string locFullFileName;
+                string locFileName;
+                if (firName != "")
                 {
-                    Application.Exit();
-                    return;
-                }
-                return;
-            }
-            downCount = checkedListBox1.CheckedIndices.Count;
-
-            
-
-            foreach (int ic in checkedListBox1.CheckedIndices)
-            {
-                if (downCount == 1)
-                {
-                    serviceName = " (" + founds[ic].serviceName + ")";
+                    locFullFileName = firName;
+                    locFileName = firName.ExtractFileName();
                 }
                 else
                 {
-                    serviceName = "";
+                    locFullFileName = curFullFileName;
+                    locFileName = curFileName;
                 }
 
-                using (WebClient webClient = new WebClient())
+                downCount = 0;
+                downCountPos = 0;
+
+                if (checkedListBox1.Items.Count == 0)
                 {
-                    string url = founds[ic].download;
-                    
-                    var stream = webClient.OpenRead(url);
-
-                    //ShowMessage(url);
-
-                    string header_contentDisposition = webClient.ResponseHeaders["content-disposition"];
-                    string filename = new ContentDisposition(header_contentDisposition).FileName;
-                    stream.Close();
-                    if (locFullFileName != "")
+                    ShowMessage("Busque algo primeiro!");
+                    button1.Enabled = true;
+                    if (hide)
                     {
-                        filename = locFileName + Path.GetExtension(filename);
-                        if (File.Exists(filename))
-                        {
-                            int z = 1;
-                            string tmp3 = "";
-                            do
-                            {
-                                filename = locFileName + "(" + z + ")" + Path.GetExtension(filename);
-                                z++;
-                            } while (File.Exists(tmp3));
+                        Application.Exit();
+                        return;
+                    }
+                    return;
+                }
+                downCount = checkedListBox1.CheckedIndices.Count;
 
-                        }
+
+
+                foreach (int ic in checkedListBox1.CheckedIndices)
+                {
+                    if (downCount == 1)
+                    {
+                        serviceName = " (" + founds[ic].serviceName + ")";
                     }
                     else
                     {
-                        if (File.Exists(filename))
-                        {
-                            int z = 1;
-                            string tmp3 = "";
-                            do
-                            {
-                                filename = filename.ExtractFileName() + "(" + z + ")" + Path.GetExtension(filename);
-                                z++;
-                            } while (File.Exists(tmp3));
+                        serviceName = "";
+                    }
 
+                    using (CustomWebClient webClient = new CustomWebClient())
+                    {
+                        string url = founds[ic].download;
+
+                        //string tst = webClient.
+                        //ShowMessage(tst);
+
+                       
+
+                        var stream = webClient.OpenRead(url);
+                        string filename = "";
+
+                        string header_contentDisposition = webClient.ResponseHeaders["content-disposition"];
+                        if (!string.IsNullOrEmpty(header_contentDisposition))
+                        {
+                            filename = new ContentDisposition(header_contentDisposition).FileName;
+                            stream.Close();
+                        }
+                        else
+                        {
+
+                            string head = GetWebPageContent(url, 3);
+                            if (head.StartsWith("Rar"))
+                            {
+                                filename = String.Join("", textBox1.Text.Split(Path.GetInvalidFileNameChars())) + ".rar";
+                            }
+                            else if (head.StartsWith("PK"))
+                            {
+                                filename = String.Join("", textBox1.Text.Split(Path.GetInvalidFileNameChars())) + ".zip";
+                            }
+                            else if (head.StartsWith("1\n"))
+                            {
+                                filename = String.Join("", textBox1.Text.Split(Path.GetInvalidFileNameChars())) + ".srt";
+                            }
+                        }
+                        
+                        //ShowMessage("filename: " + filename);
+                        
+                        if (locFullFileName != "")
+                        {
+                            filename = locFileName + Path.GetExtension(filename);
+                            if (File.Exists(filename))
+                            {
+                                int z = 1;
+                                string tmp3 = "";
+                                do
+                                {
+                                    filename = locFileName + "(" + z + ")" + Path.GetExtension(filename);
+                                    z++;
+                                } while (File.Exists(tmp3));
+
+                            }
+                        }
+                        else
+                        {
+                            if (File.Exists(filename))
+                            {
+                                int z = 1;
+                                string tmp3 = "";
+                                do
+                                {
+                                    filename = filename.ExtractFileName() + "(" + z + ")" + Path.GetExtension(filename);
+                                    z++;
+                                } while (File.Exists(tmp3));
+
+                            }
+                        }
+                        //ShowMessage("Baixando: " + url + " ("+filename+")");
+                        try
+                        {
+                            webClient.DownloadFileCompleted += DownloadFileCompleted(filename, locFullFileName, locFileName);
+                            webClient.DownloadFileAsync(new Uri(url), filename);
+                            //webClient.DownloadFile(new Uri(url), filename);
+                            //webClient.Dispose();
+                        }
+                        catch (Exception ex)
+                        {
+                            ShowMessage("Exception: " + ex.ToString());
                         }
                     }
-                    //ShowMessage("Baixando: " + url + " ("+filename+")");
-                    try
-                    {
-                        webClient.DownloadFileCompleted += DownloadFileCompleted(filename, locFullFileName, locFileName);
-                        webClient.DownloadFileAsync(new Uri(url), filename);
-                        //webClient.DownloadFile(new Uri(url), filename);
-                        //webClient.Dispose();
-                    }
-                    catch (Exception ex)
-                    {
-                        ShowMessage("Exception: " + ex.ToString());
-                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Exception: " + ex.ToString());
             }
             //webClient.Dispose();
 
@@ -749,7 +805,7 @@ namespace LegendasTvDownloader
 
         private void button3_Click(object sender, EventArgs e)
         {
-            using (WebClient webClient = new WebClient())
+            using (WebClient webClient = new CustomWebClient())
             {
                 if (pictureBox1.ImageLocation == "" || pictureBox1.ImageLocation.Length == 0)
                 {

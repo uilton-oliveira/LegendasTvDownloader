@@ -24,7 +24,7 @@ namespace LegendasTvDownloader
 
         public static List<Useful.legendas> Buscar(string hash, bool popularFoto)
         {
-            using (WebClient client = new WebClient())
+            using (WebClient client = new CustomWebClient())
             {
                 client.Encoding = Encoding.UTF8;
 

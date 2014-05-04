@@ -13,7 +13,7 @@ namespace LegendasTvDownloader
             string busca = title.Replace(".", " ").Replace(" ", "+").RemoveAccents();
             string findt = "http://www.imdb.com/find?q=" + busca;
 
-            using (WebClient webClient = new WebClient())
+            using (WebClient webClient = new CustomWebClient())
             {
                 webClient.Encoding = Encoding.UTF8;
                 string tmpHtml = webClient.DownloadString(findt);

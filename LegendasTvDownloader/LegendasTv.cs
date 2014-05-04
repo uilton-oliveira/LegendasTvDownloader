@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net;
+using System.Windows.Forms;
 
 namespace LegendasTvDownloader
 {
@@ -12,7 +13,7 @@ namespace LegendasTvDownloader
 
         public static List<Useful.legendas> Buscar(string fileSearch, bool popularFotoDesc, int pagina = 0)
         {
-            using (WebClient webClient = new WebClient())
+            using (WebClient webClient = new CustomWebClient())
             {
                 webClient.Encoding = Encoding.UTF8;
 
@@ -47,9 +48,10 @@ namespace LegendasTvDownloader
                     sub = new Useful.legendas();
                     sub.maisPagina = mais;
                     id = ret2.text.SearchAndCut("download/", "/").text;
+                    //MessageBox.Show("ID: " + id);
                     nome = ret2.text.SearchAndCut(">", "").text;
 
-                    sub.id = id;
+                    //sub.id = id;
                     sub.nome = nome;
                     sub.download = "http://legendas.tv/downloadarquivo/" + id;
                     sub.serviceName = serviceName;
@@ -61,9 +63,12 @@ namespace LegendasTvDownloader
                         //MessageBox.Show("Baixando foto...");
                         foto = true;
                         string html2 = webClient.DownloadString("http://legendas.tv/download/" + id);
-                        //MessageBox.Show("foto ok1");
+                        //MessageBox.Show(html2);
                         Useful.search ret3 = html2.SearchAndCut("<section class=\"first\">", "</section>");
-                        string img = "http://legendas.tv/" + ret3.text.SearchAndCut("<img src=\"", "\"").text;
+                        string img = ret3.text.SearchAndCut("<img src=\"", "\"").text;
+                        if (!img.Contains("http")) {
+                            img = "http://legendas.tv/" + img;
+                        }
                         string titulo = ret3.text.SearchAndCut("<h5>", "</h5>").text;
                         string desc = ret3.text.SearchAndCut("<p>", "</p>").text.Replace("<br>", "\n").Replace("<br/>", "\n").Replace("<br />", "\n");
 
