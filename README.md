@@ -13,9 +13,11 @@ Este programa contém algorítimos pra identificar o nome original do filme ou s
 
 Fiz este programa em apenas 2 dias, se gostarem ou encontraram problemas, comentem!
 
-2.0
+2.1
 -----------
-- Corrigido problemas devido a mudanças no site do Legendas.tv
+- Melhorado ação do botão "enter", agora se pressionado enquanto estiver com algo da lista selecionado, irá baixar automaticamente, e se tiver com foco no campo de busca, irá buscar manualmente...
+- Corrigido bug que não exibia mensagem informando que tinha sido baixado com sucesso em caso de buscar apenas 1 arquivo.
+- Corrigido problemas devido a mudanças no site do Legendas.tv (novamente)
 
 2.0
 -----------
