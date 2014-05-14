@@ -52,7 +52,7 @@ namespace LegendasTvDownloader
         public string curFileName = "";
         public string curFullFileName = "";
         public static int pagina = 1;
-        public int cv = 20;
+        public int cv = 21;
         public static bool hide = false;
         public static string serviceName;
         private readonly object syncLock = new object();
@@ -101,8 +101,8 @@ namespace LegendasTvDownloader
 
         public void ManualThread()
         {
-            button1.Enabled = false;
-            button2.Enabled = false;
+            button1.Invoke(new Action(() => button1.Enabled = false));
+            button2.Invoke(new Action(() => button2.Enabled = false));
             this.Invoke(new Action(() => this.Text = "Buscando legenda, aguarde..."));
             try
             {
@@ -114,8 +114,8 @@ namespace LegendasTvDownloader
                 if (!list.Any())
                 {
                     ShowMessage("Nenhuma legenda encontrada para: " + fileSearch);
-                    button1.Enabled = true;
-                    button2.Enabled = true;
+                    button1.Invoke(new Action(() => button1.Enabled = true));
+                    button2.Invoke(new Action(() => button2.Enabled = true));
                     return;
                 }
 
@@ -142,8 +142,8 @@ namespace LegendasTvDownloader
                     checkedListBox1.Invoke(new Action(() => checkedListBox1.Items.Add(leg.nome, check)));
                 }
 
-                button1.Enabled = true;
-                button2.Enabled = true;
+                button1.Invoke(new Action(() => button1.Enabled = true));
+                button2.Invoke(new Action(() => button2.Enabled = true));
 
                 //ShowMessage(html);
             }
@@ -181,8 +181,8 @@ namespace LegendasTvDownloader
 
             lock (syncLock)
             {
-                button1.Enabled = false;
-                button2.Enabled = false;
+                button1.Invoke(new Action(() => button1.Enabled = false));
+                button2.Invoke(new Action(() => button2.Enabled = false));
                 this.Invoke(new Action(() => this.Text = "Buscando legenda, aguarde..."));
                 try
                 {
@@ -363,8 +363,8 @@ namespace LegendasTvDownloader
 
                     checkedListBox1.Invoke(new Action(() => checkedListBox1.ClearSelected()));
 
-                    button1.Enabled = true;
-                    button2.Enabled = true;
+                    button1.Invoke(new Action(() => button1.Enabled = true));
+                    button2.Invoke(new Action(() => button2.Enabled = true));
 
                     if (hide)
                     {
@@ -546,8 +546,8 @@ namespace LegendasTvDownloader
                     }
                     fileStream.Close();
                 }
-                if (hide)
-                {
+                //if (hide)
+                //{
                     lock (syncLock2)
                     {
                         waiting--;
@@ -561,10 +561,10 @@ namespace LegendasTvDownloader
                             return;
                         }
                     }
-                }
+                //}
                 if (downCountPos == downCount)
                 {
-                    button1.Enabled = true;
+                    button1.Invoke(new Action(() => button1.Enabled = true));
                 }
                 //Application.Exit();
             };
@@ -620,7 +620,7 @@ namespace LegendasTvDownloader
                 if (checkedListBox1.Items.Count == 0)
                 {
                     ShowMessage("Busque algo primeiro!");
-                    button1.Enabled = true;
+                    button1.Invoke(new Action(() => button1.Enabled = true));
                     if (hide)
                     {
                         Application.Exit();
@@ -656,15 +656,22 @@ namespace LegendasTvDownloader
                         string filename = "";
 
                         string header_contentDisposition = webClient.ResponseHeaders["content-disposition"];
+                        bool err = false;
                         if (!string.IsNullOrEmpty(header_contentDisposition))
                         {
                             filename = new ContentDisposition(header_contentDisposition).FileName;
+                            if (string.IsNullOrEmpty(filename)) {
+                                err = true;
+                            }
                             stream.Close();
+                        } else {
+                            err = true;
                         }
-                        else
+                        if (err == true)
                         {
 
                             string head = GetWebPageContent(url, 3);
+                            //ShowMessage("Head: " + head);
                             if (head.StartsWith("Rar"))
                             {
                                 filename = String.Join("", textBox1.Text.Split(Path.GetInvalidFileNameChars())) + ".rar";
@@ -731,7 +738,7 @@ namespace LegendasTvDownloader
             }
             //webClient.Dispose();
 
-            button1.Enabled = true;
+            button1.Invoke(new Action(() => button1.Enabled = true));
             //ShowMessage();
         }
         private void button1_Click(object sender, EventArgs e)
@@ -793,14 +800,6 @@ namespace LegendasTvDownloader
             carregarMais.Visible = false;
             this.Text = "Carregando mais, aguarde...";
             new Thread(new ThreadStart(ManualThread)).Start();
-        }
-
-        private void textBox1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Return)
-            {
-                button2.PerformClick();
-            }
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -867,6 +866,26 @@ namespace LegendasTvDownloader
                 MessageBoxIcon.Information,
                 MessageBoxDefaultButton.Button1,  // specify "Yes" as the default
                 (MessageBoxOptions)0x40000);      // specify MB_TOPMOST
+        }
+
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)13)
+            {
+                button2.PerformClick();
+                e.Handled = true;
+            }
+
+        }
+
+        private void checkedListBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)13)
+            {
+                button1.PerformClick();
+                e.Handled = true;
+            }
+
         }
 
     
