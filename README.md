@@ -17,6 +17,10 @@ Fiz este programa em apenas 2 dias, se gostarem ou encontraram problemas, coment
 -----------
 - Corrigido problemas devido a mudanças no site do Legendas.tv
 
+2.0
+-----------
+- Corrigido problemas devido a mudanças no site do Legendas.tv
+
 1.9
 -----------
 - Adicionado nova entrada no botão direito: "Baixar melhor legenda (suporta multiplos)" que irá baixar a melhor legenda automaticamente, suporta busca selecionando vários arquivos também!!
