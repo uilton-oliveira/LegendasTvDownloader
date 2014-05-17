@@ -52,7 +52,7 @@ namespace LegendasTvDownloader
         public string curFileName = "";
         public string curFullFileName = "";
         public static int pagina = 1;
-        public int cv = 21;
+        public int cv = 22;
         public static bool hide = false;
         public static string serviceName;
         private readonly object syncLock = new object();

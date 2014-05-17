@@ -22,11 +22,11 @@ namespace LegendasTvDownloader
                 string page = "";
                 if (pagina > 1)
                 {
-                    page = "/page:"+pagina;
+                    page = "/-/"+pagina;
                 }
 
-                //MessageBox.Show("Iniciando busca");
-                string html = webClient.DownloadString("http://legendas.tv/util/carrega_legendas_busca/termo:" + fileSearch + "/id_idioma:1" + page);
+                //MessageBox.Show("Iniciando busca");                                                                         //1 = idioma
+                string html = webClient.DownloadString("http://legendas.tv/util/carrega_legendas_busca/" + fileSearch + "/1" + page);
                 //MessageBox.Show("busca ok1");
                 string ret = html.SearchAndCut("<div class=\"middle \"> ", "<div class=\"clear\">").text; // inicio e fim de onde fica as legendas
                 bool mais = html.Contains("load_more");
