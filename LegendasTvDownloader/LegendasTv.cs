@@ -28,7 +28,7 @@ namespace LegendasTvDownloader
                 //MessageBox.Show("Iniciando busca");                                                                         //1 = idioma
                 string html = webClient.DownloadString("http://legendas.tv/util/carrega_legendas_busca/" + fileSearch + "/1" + page);
                 //MessageBox.Show("busca ok1");
-                string ret = html.SearchAndCut("<div class=\"middle \"> ", "<div class=\"clear\">").text; // inicio e fim de onde fica as legendas
+                string ret = html.SearchAndCut("<div class=\"middle, "<div class=\"clear\">").text; // inicio e fim de onde fica as legendas
                 bool mais = html.Contains("load_more");
                 string id = "";
                 string nome;
