@@ -13,6 +13,10 @@ Este programa contém algorítimos pra identificar o nome original do filme ou s
 
 Fiz este programa em apenas 2 dias, se gostarem ou encontraram problemas, comentem!
 
+2.4
+-----------
+- Desativado mensagem de debug que esqueci de desativar na 2.3
+
 2.3
 -----------
 - Corrigido problemas devido a mudanças no site do Legendas.tv
