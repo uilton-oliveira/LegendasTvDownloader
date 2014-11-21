@@ -13,6 +13,21 @@ Este programa contém algorítimos pra identificar o nome original do filme ou s
 
 Fiz este programa em apenas 2 dias, se gostarem ou encontraram problemas, comentem!
 
+
+3.2
+-----------
+- Adicionado sistema de login para o Legendas.tv
+
+3.0 / 3.1
+-----------
+- Adicionado monitoramento de legendas ainda não lançada, aviso será entregue por email e não precisa deixar o software rodando, veja: http://i.imgur.com/VD9AUL4.png
+- Software modificado pra utilizar um web service remoto também desenvolvido por mim pra realizar as buscas ao invés de fazer localmente através de http requests.
+= Vantagens:
++ Em caso de modificações no legendas.tv ou legendasbrasil não precisará de um novo update pra fazer voltar a funcionar.
++ Adicionado um cache de 5 minutos no servidor pra buscas iguais, evitando sobrecarga no meu servidor (gratuito/openshift) e também no do legendas.tv/legendasbrasil
++ Buscas mais rápidas, pois utiliza o servidor que tem uma internet bem melhor que a brasileira pra fazer as requisições http.
++ O cliente agora faz apenas uma requisição no formato JSON ao invés de 4-5 requisições no formato HTTP em sites diferentes (Legendas.tv / Legendasbrasil / IMDB)
+
 2.4
 -----------
 - Desativado mensagem de debug que esqueci de desativar na 2.3
@@ -52,9 +67,7 @@ Fiz este programa em apenas 2 dias, se gostarem ou encontraram problemas, coment
 -----------
 - Corrigido alguns bugs.
 - Adicionado suporte para mais um mecanismo de busca: LegendasBrasil.com.br 
-
 OBS 1: LegendasBrasil apenas para busca automática pelo menu de contexto, manual continua apenas o legendas.tv, usado o mesmo método que usam no software deles
-
 OBS 2: Legendas.tv tem prioridade no método de detecção da seleção automática de melhor legenda.
 
 1.5

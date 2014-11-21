@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.descriptionTitle = new System.Windows.Forms.GroupBox();
             this.description1 = new System.Windows.Forms.RichTextBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -38,10 +38,20 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.carregarMais = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.configurarEmailToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configurarEmailToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.exibirListaDeMonitoraçãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.legendastvAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.descriptionTitle.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // checkedListBox1
@@ -51,26 +61,18 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.checkedListBox1.CheckOnClick = true;
             this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(221, 3);
+            this.checkedListBox1.Location = new System.Drawing.Point(221, 23);
             this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(562, 379);
+            this.checkedListBox1.Size = new System.Drawing.Size(562, 364);
             this.checkedListBox1.TabIndex = 0;
             this.checkedListBox1.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBox1_ItemCheck);
             this.checkedListBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkedListBox1_KeyPress);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.ImageLocation = "";
-            this.pictureBox1.Location = new System.Drawing.Point(-2, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(217, 314);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
             // 
             // descriptionTitle
             // 
             this.descriptionTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.descriptionTitle.Controls.Add(this.button4);
             this.descriptionTitle.Controls.Add(this.description1);
             this.descriptionTitle.Location = new System.Drawing.Point(6, 416);
             this.descriptionTitle.Name = "descriptionTitle";
@@ -95,7 +97,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(3, 361);
+            this.button1.Location = new System.Drawing.Point(3, 367);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(212, 21);
             this.button1.TabIndex = 3;
@@ -120,7 +122,7 @@
             // textBox1
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBox1.Location = new System.Drawing.Point(3, 392);
+            this.textBox1.Location = new System.Drawing.Point(3, 394);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(298, 20);
             this.textBox1.TabIndex = 5;
@@ -131,7 +133,7 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button2.Location = new System.Drawing.Point(303, 391);
+            this.button2.Location = new System.Drawing.Point(303, 393);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(92, 22);
             this.button2.TabIndex = 6;
@@ -142,7 +144,7 @@
             // carregarMais
             // 
             this.carregarMais.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.carregarMais.Location = new System.Drawing.Point(658, 387);
+            this.carregarMais.Location = new System.Drawing.Point(658, 392);
             this.carregarMais.Name = "carregarMais";
             this.carregarMais.Size = new System.Drawing.Size(125, 23);
             this.carregarMais.TabIndex = 7;
@@ -151,16 +153,6 @@
             this.carregarMais.Visible = false;
             this.carregarMais.Click += new System.EventHandler(this.carregarMais_Click);
             // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(3, 321);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(212, 21);
-            this.button3.TabIndex = 8;
-            this.button3.Text = "Baixar Poster";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -168,7 +160,91 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(28, 13);
             this.label2.TabIndex = 9;
-            this.label2.Text = "v2.2";
+            this.label2.Text = "v3.2";
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(784, 24);
+            this.menuStrip1.TabIndex = 10;
+            this.menuStrip1.Text = "Menu";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.configurarEmailToolStripMenuItem,
+            this.legendastvAccountToolStripMenuItem});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(50, 20);
+            this.toolStripMenuItem1.Text = "Menu";
+            // 
+            // configurarEmailToolStripMenuItem
+            // 
+            this.configurarEmailToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.configurarEmailToolStripMenuItem1,
+            this.exibirListaDeMonitoraçãoToolStripMenuItem});
+            this.configurarEmailToolStripMenuItem.Name = "configurarEmailToolStripMenuItem";
+            this.configurarEmailToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.configurarEmailToolStripMenuItem.Text = "Monitor";
+            // 
+            // configurarEmailToolStripMenuItem1
+            // 
+            this.configurarEmailToolStripMenuItem1.Name = "configurarEmailToolStripMenuItem1";
+            this.configurarEmailToolStripMenuItem1.Size = new System.Drawing.Size(163, 22);
+            this.configurarEmailToolStripMenuItem1.Text = "Configurar Email";
+            this.configurarEmailToolStripMenuItem1.Click += new System.EventHandler(this.configurarEmailToolStripMenuItem1_Click);
+            // 
+            // exibirListaDeMonitoraçãoToolStripMenuItem
+            // 
+            this.exibirListaDeMonitoraçãoToolStripMenuItem.Name = "exibirListaDeMonitoraçãoToolStripMenuItem";
+            this.exibirListaDeMonitoraçãoToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.exibirListaDeMonitoraçãoToolStripMenuItem.Text = "Listar Cadastros";
+            this.exibirListaDeMonitoraçãoToolStripMenuItem.Click += new System.EventHandler(this.exibirListaDeMonitoraçãoToolStripMenuItem_Click);
+            // 
+            // legendastvAccountToolStripMenuItem
+            // 
+            this.legendastvAccountToolStripMenuItem.Name = "legendastvAccountToolStripMenuItem";
+            this.legendastvAccountToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.legendastvAccountToolStripMenuItem.Text = "Legendas.tv Account";
+            this.legendastvAccountToolStripMenuItem.Click += new System.EventHandler(this.legendastvAccountToolStripMenuItem_Click);
+            // 
+            // button3
+            // 
+            this.button3.FlatAppearance.BorderSize = 0;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Image = global::LegendasTvDownloader.Properties.Resources.download_icon;
+            this.button3.Location = new System.Drawing.Point(195, 26);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(17, 18);
+            this.button3.TabIndex = 8;
+            this.toolTip1.SetToolTip(this.button3, "Salvar Poster com nome \'Poster.jpg\'");
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button4
+            // 
+            this.button4.FlatAppearance.BorderSize = 0;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.Image = global::LegendasTvDownloader.Properties.Resources.download_icon;
+            this.button4.Location = new System.Drawing.Point(757, 2);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(21, 23);
+            this.button4.TabIndex = 11;
+            this.toolTip1.SetToolTip(this.button4, "Salvar descrição como \'descrição.txt\'");
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.ImageLocation = "";
+            this.pictureBox1.Location = new System.Drawing.Point(-2, 27);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(217, 334);
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
             // 
             // Form1
             // 
@@ -185,14 +261,18 @@
             this.Controls.Add(this.descriptionTitle);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.checkedListBox1);
+            this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Legendas.tv Downloader";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.descriptionTitle.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -211,6 +291,14 @@
         private System.Windows.Forms.Button carregarMais;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem configurarEmailToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem configurarEmailToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem exibirListaDeMonitoraçãoToolStripMenuItem;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ToolStripMenuItem legendastvAccountToolStripMenuItem;
     }
 }
 

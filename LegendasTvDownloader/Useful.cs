@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Globalization;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
+using System.Collections.Specialized;
 
 namespace LegendasTvDownloader
 {
@@ -63,6 +63,45 @@ namespace LegendasTvDownloader
 
         }
 
+        public static CookieContainer cookieLegendasTv = null;
+
+        public static CookieContainer loginLegendasTv(bool showLogin=true, string usuario=null, string senha=null)
+        {
+            using (CustomWebClient webClient = new CustomWebClient())
+            {
+                byte[] response = null;
+
+                string tryUsuario = usuario != null ? usuario : Properties.Settings.Default.usuario;
+                string trySenha = senha != null ? senha : Base64Decode(Properties.Settings.Default.senha);
+
+                response = webClient.UploadValues("http://legendas.tv/login", "POST", new NameValueCollection()
+                        {
+                            { "_method", "POST" },
+                            { "data[User][username]", tryUsuario },
+                            { "data[User][password]", trySenha },
+                            { "data[lembrar]", "on"}
+                        });
+                string responseStr = Encoding.UTF8.GetString(response);
+                if (responseStr.Contains("<title>Login - Legendas TV</title>"))
+                {
+                    //MessageBox.Show("Usuario ou senha inválidos!");
+                    if (showLogin)
+                    {
+                        Login lgtv = new Login();
+                        lgtv.Show();
+                    }
+                    return null;
+                }
+                else
+                {
+                    cookieLegendasTv = webClient.CookieContainer;
+                    return cookieLegendasTv;
+
+                }
+
+            }
+        }
+
         public static string ExtractFileName(this string filePath)
         {
             string file = filePath;
@@ -106,6 +145,10 @@ namespace LegendasTvDownloader
                 file = file.Substring(start);
             }
             return file;
+        }
+
+        public static string GetHash(string filePath) {
+            return ToHexadecimal(ComputeMovieHash(filePath));
         }
 
         public static subtitles GetInfoSubtitles(string filePath)
