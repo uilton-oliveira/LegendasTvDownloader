@@ -42,27 +42,41 @@ namespace LegendasTvDownloader
 
                 string json = webClient.DownloadString("http://legendasws.darksupremo.com/monitor/list/" + Form1.email);
 
-                
 
-
-
-                List<Monitor> mList = JsonConvert.DeserializeObject<List<Monitor>>(json);
-                foreach (Monitor m in mList)
+                if (!json.Equals("not_found"))
                 {
-                    ListViewItem item1 = new ListViewItem(m.pk.ToString());
-                    item1.SubItems.Add(m.email);
-                    item1.SubItems.Add(m.consulta);
-                    item1.SubItems.Add(m.achou == 1 ? "Sim" : "Não");
+                    try
+                    {
+                        List<Monitor> mList = JsonConvert.DeserializeObject<List<Monitor>>(json);
+                        foreach (Monitor m in mList)
+                        {
+                            ListViewItem item1 = new ListViewItem(m.pk.ToString());
+                            item1.SubItems.Add(m.email);
+                            item1.SubItems.Add(m.consulta);
+                            item1.SubItems.Add(m.achou == 1 ? "Sim" : "Não");
 
-                    DateTime myDate = DateTime.ParseExact(m.datahora_verificacao, "dd/MM/yy HH:mm:ss",
-                                       System.Globalization.CultureInfo.CurrentCulture);
+                            DateTime myDate = DateTime.ParseExact(m.datahora_verificacao, "dd/MM/yy HH:mm:ss",
+                                               System.Globalization.CultureInfo.CurrentCulture);
 
-                    TimeZoneInfo nzTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
-                    DateTime nzDateTime = TimeZoneInfo.ConvertTimeFromUtc(myDate, nzTimeZone);
+                            TimeZoneInfo nzTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+                            DateTime nzDateTime = TimeZoneInfo.ConvertTimeFromUtc(myDate, nzTimeZone);
 
-                    item1.SubItems.Add(nzDateTime.ToString("dd/MM/yy - HH:mm"));
-                    monitorView1.Items.Add(item1);
+                            item1.SubItems.Add(nzDateTime.ToString("dd/MM/yy - HH:mm"));
+                            monitorView1.Items.Add(item1);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Falha ao se conectar com o servidor, ou o servidor retornou algo inesperado, retorno: " + json);
+                    }
                 }
+                else
+                {
+                    MessageBox.Show("Você atualmente não está monitorando nada, para monitorar algo, primeiro procure por algo que não seja encontrado, aí será exibido um aviso para monitorar");
+                }
+
+
+                
 
             }
         }

@@ -32,22 +32,22 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.descriptionTitle = new System.Windows.Forms.GroupBox();
+            this.button4 = new System.Windows.Forms.Button();
             this.description1 = new System.Windows.Forms.RichTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.carregarMais = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelVersion = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.configurarEmailToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configurarEmailToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.exibirListaDeMonitoraçãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.legendastvAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.descriptionTitle.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -81,6 +81,19 @@
             this.descriptionTitle.TabStop = false;
             this.descriptionTitle.Text = "Descrição";
             // 
+            // button4
+            // 
+            this.button4.FlatAppearance.BorderSize = 0;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.Image = global::LegendasTvDownloader.Properties.Resources.download_icon;
+            this.button4.Location = new System.Drawing.Point(757, 2);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(21, 23);
+            this.button4.TabIndex = 11;
+            this.toolTip1.SetToolTip(this.button4, "Salvar descrição como \'descrição.txt\'");
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // description1
             // 
             this.description1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -112,11 +125,11 @@
             this.label1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.label1.Location = new System.Drawing.Point(474, 561);
+            this.label1.Location = new System.Drawing.Point(502, 561);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(306, 13);
+            this.label1.Size = new System.Drawing.Size(271, 13);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Desenvolvido por DarkSupremo - http://www.garenaworld.com";
+            this.label1.Text = "Desenvolvido por DarkSupremo - uilton.dev@gmail.com";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // textBox1
@@ -153,14 +166,14 @@
             this.carregarMais.Visible = false;
             this.carregarMais.Click += new System.EventHandler(this.carregarMais_Click);
             // 
-            // label2
+            // labelVersion
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 561);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(28, 13);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "v3.2";
+            this.labelVersion.AutoSize = true;
+            this.labelVersion.Location = new System.Drawing.Point(3, 561);
+            this.labelVersion.Name = "labelVersion";
+            this.labelVersion.Size = new System.Drawing.Size(37, 13);
+            this.labelVersion.TabIndex = 9;
+            this.labelVersion.Text = "v3.2.2";
             // 
             // menuStrip1
             // 
@@ -224,19 +237,6 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button4
-            // 
-            this.button4.FlatAppearance.BorderSize = 0;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Image = global::LegendasTvDownloader.Properties.Resources.download_icon;
-            this.button4.Location = new System.Drawing.Point(757, 2);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(21, 23);
-            this.button4.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.button4, "Salvar descrição como \'descrição.txt\'");
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
             // pictureBox1
             // 
             this.pictureBox1.ImageLocation = "";
@@ -251,7 +251,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 576);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.carregarMais);
             this.Controls.Add(this.button2);
@@ -290,7 +290,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button carregarMais;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelVersion;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem configurarEmailToolStripMenuItem;

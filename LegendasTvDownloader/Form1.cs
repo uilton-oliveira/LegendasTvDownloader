@@ -50,13 +50,16 @@ namespace LegendasTvDownloader
             this.MinimumSize = new System.Drawing.Size(800, 615);
 
             InitializeComponent();
+
+            cv = float.Parse(this.labelVersion.Text.ReplaceLast(".", "").Substring(1), CultureInfo.InvariantCulture.NumberFormat);
+
         }
 
         Dictionary<int, Useful.legendas> founds = new Dictionary<int, Useful.legendas>();
         public string curFileName = "";
         public string curFullFileName = "";
         public static int pagina = 1;
-        public int cv = 31;
+        public float cv;
         public static bool hide = false;
         public static string serviceName;
         private readonly object syncLock = new object();
@@ -81,27 +84,31 @@ namespace LegendasTvDownloader
         
         public void VersionThread()
         {
-            using (WebClient webClient = new CustomWebClient())
+            try
             {
-                webClient.Encoding = Encoding.UTF8;
-                string html = webClient.DownloadString("http://www.garenaworld.com/images/g_master/checker/lgtv.txt");
-                string v = html.SearchAndCut("[v]", "[/v]").text;
-                string url = html.SearchAndCut("[url]", "[/url]").text;
-                int lv = Convert.ToInt32(v);
-                if (lv > cv)
+                using (WebClient webClient = new CustomWebClient())
                 {
-                    if (MessageBox.Show(this, "Nova versão disponível, deseja visualizar?", "Atualização",
-                         MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, (MessageBoxOptions)0x40000)
-                         == DialogResult.Yes)
+                    webClient.Encoding = Encoding.UTF8;
+                    string html = webClient.DownloadString("https://github.com/DarkSupremo/LegendasTvDownloader/tags");
+                    string v = html.SearchAndCut("<span class=\"tag-name\">", "</span>").text.ReplaceLast(".", "");
+                    string url = "https://github.com/DarkSupremo/LegendasTvDownloader/releases";
+                    float lv = float.Parse(v, CultureInfo.InvariantCulture.NumberFormat);
+                    if (lv > cv)
                     {
-                        System.Diagnostics.Process.Start(url);
-                        if (hide)
+                        if (MessageBox.Show(null, "Nova versão disponível, deseja visualizar?", "Atualização",
+                             MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, (MessageBoxOptions)0x40000)
+                             == DialogResult.Yes)
                         {
-                            Application.Exit();
+                            System.Diagnostics.Process.Start(url);
+                            if (hide)
+                            {
+                                Application.Exit();
+                            }
                         }
                     }
                 }
             }
+            catch (Exception ex) { }
         }
 
         
@@ -860,7 +867,7 @@ namespace LegendasTvDownloader
 
         private void label1_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.garenaworld.com");
+            System.Diagnostics.Process.Start("mailto:uilton.dev@gmail.com");
         }
 
         private void button2_Click(object sender, EventArgs e)

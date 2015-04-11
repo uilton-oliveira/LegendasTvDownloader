@@ -50,6 +50,7 @@ namespace LegendasTvDownloader
         {
             Properties.Settings.Default["usuario"] = "";
             Properties.Settings.Default["senha"] = "";
+            Properties.Settings.Default.Save();
             usuario.Text = "";
             senha.Text = "";
         }
