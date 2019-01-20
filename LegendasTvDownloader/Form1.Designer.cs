@@ -42,9 +42,6 @@
             this.labelVersion = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.configurarEmailToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.configurarEmailToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.exibirListaDeMonitoraçãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.legendastvAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.button3 = new System.Windows.Forms.Button();
@@ -110,9 +107,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(3, 367);
+            this.button1.Location = new System.Drawing.Point(396, 393);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(212, 21);
+            this.button1.Size = new System.Drawing.Size(113, 22);
             this.button1.TabIndex = 3;
             this.button1.Text = "Baixar Selecionado";
             this.button1.UseVisualStyleBackColor = true;
@@ -125,11 +122,11 @@
             this.label1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.label1.Location = new System.Drawing.Point(502, 561);
+            this.label1.Location = new System.Drawing.Point(576, 561);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(271, 13);
+            this.label1.Size = new System.Drawing.Size(201, 13);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Desenvolvido por DarkSupremo - uilton.dev@gmail.com";
+            this.label1.Text = "Desenvolvido por www.uiltonsites.com.br";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // textBox1
@@ -173,7 +170,7 @@
             this.labelVersion.Name = "labelVersion";
             this.labelVersion.Size = new System.Drawing.Size(37, 13);
             this.labelVersion.TabIndex = 9;
-            this.labelVersion.Text = "v3.2.2";
+            this.labelVersion.Text = "v3.2.3";
             // 
             // menuStrip1
             // 
@@ -188,34 +185,10 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.configurarEmailToolStripMenuItem,
             this.legendastvAccountToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(50, 20);
             this.toolStripMenuItem1.Text = "Menu";
-            // 
-            // configurarEmailToolStripMenuItem
-            // 
-            this.configurarEmailToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.configurarEmailToolStripMenuItem1,
-            this.exibirListaDeMonitoraçãoToolStripMenuItem});
-            this.configurarEmailToolStripMenuItem.Name = "configurarEmailToolStripMenuItem";
-            this.configurarEmailToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.configurarEmailToolStripMenuItem.Text = "Monitor";
-            // 
-            // configurarEmailToolStripMenuItem1
-            // 
-            this.configurarEmailToolStripMenuItem1.Name = "configurarEmailToolStripMenuItem1";
-            this.configurarEmailToolStripMenuItem1.Size = new System.Drawing.Size(163, 22);
-            this.configurarEmailToolStripMenuItem1.Text = "Configurar Email";
-            this.configurarEmailToolStripMenuItem1.Click += new System.EventHandler(this.configurarEmailToolStripMenuItem1_Click);
-            // 
-            // exibirListaDeMonitoraçãoToolStripMenuItem
-            // 
-            this.exibirListaDeMonitoraçãoToolStripMenuItem.Name = "exibirListaDeMonitoraçãoToolStripMenuItem";
-            this.exibirListaDeMonitoraçãoToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
-            this.exibirListaDeMonitoraçãoToolStripMenuItem.Text = "Listar Cadastros";
-            this.exibirListaDeMonitoraçãoToolStripMenuItem.Click += new System.EventHandler(this.exibirListaDeMonitoraçãoToolStripMenuItem_Click);
             // 
             // legendastvAccountToolStripMenuItem
             // 
@@ -242,7 +215,7 @@
             this.pictureBox1.ImageLocation = "";
             this.pictureBox1.Location = new System.Drawing.Point(-2, 27);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(217, 334);
+            this.pictureBox1.Size = new System.Drawing.Size(217, 360);
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             // 
@@ -293,9 +266,6 @@
         private System.Windows.Forms.Label labelVersion;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem configurarEmailToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem configurarEmailToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem exibirListaDeMonitoraçãoToolStripMenuItem;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ToolStripMenuItem legendastvAccountToolStripMenuItem;

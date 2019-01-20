@@ -1,11 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Windows.Forms;
 
 namespace LegendasTvDownloader
 {
@@ -39,18 +36,12 @@ namespace LegendasTvDownloader
                 if (String.IsNullOrEmpty(hash))
                 {
                     string url = "http://legendasws.darksupremo.com/busca=" + Useful.Base64Encode(busca) + "/pagina=" + pagina.ToString();
-                    //string url = "http://127.0.0.1:8000/busca=" + Base64Encode(busca) + "/pagina=" + pagina.ToString();
-                    //MessageBox.Show("URL: " + url);
                     json = webClient.DownloadString(url);
-                    //MessageBox.Show("Resultado: " + json);
                 }
                 else
                 {
                     string url = "http://legendasws.darksupremo.com/busca=" + Useful.Base64Encode(busca) + "/hash=" + hash + "/pagina=" + pagina.ToString() + "/lgtv_use_hash=" + (isMovie ? "1" : "0");
-                    //string url = "http://127.0.0.1:8000/busca=" + Base64Encode(busca) + "/hash=" + hash + "/pagina=" + pagina.ToString() + "/lgtv_use_hash=" + (isMovie ? "1" : "0");
-                    //MessageBox.Show("URL: " + url);
                     json = webClient.DownloadString(url);
-                    //MessageBox.Show("Resultado: " + json);
                 }
 
 

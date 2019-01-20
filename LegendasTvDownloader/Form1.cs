@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -13,17 +11,9 @@ using System.Text.RegularExpressions;
 using Microsoft.Win32;
 using NUnrar.Archive;
 using NUnrar.Common;
-using NUnrar.Reader;
 using System.IO;
-using System.IO.Compression;
 using System.Globalization;
-
-using System.Diagnostics;
-using System.Reflection;
 using ICSharpCode.SharpZipLib.Zip;
-using System.Runtime.CompilerServices;
-using System.Configuration;
-using System.Collections.Specialized;
 
 
 
@@ -68,14 +58,11 @@ namespace LegendasTvDownloader
         public static string email = Properties.Settings.Default.email;
         public static string usuario = Properties.Settings.Default.usuario;
         public static string senha = Properties.Settings.Default.senha;
-
-
+        
         public void NewInstance(string param)
         {
             ShowMessage("new instance: " + param);
         }
-
-
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -111,9 +98,6 @@ namespace LegendasTvDownloader
             catch (Exception ex) { }
         }
 
-        
-
-
         public void ManualThread()
         {
             button1.Invoke(new Action(() => button1.Enabled = false));
@@ -126,35 +110,11 @@ namespace LegendasTvDownloader
                 this.Invoke(new Action(() => this.Text = fileSearch));
                 bool loadFoto = pagina <= 1 ? true : false;
                 List<Useful.legendas> list = LegendasWS.buscar_old(fileSearch, pagina);
-                //List<Useful.legendas> list = LegendasTv.Buscar(fileSearch, loadFoto, pagina);
                 if (!list.Any())
                 {
-                    //ShowMessage("Nenhuma legenda encontrada para: " + fileSearch);
-                    if (email.Equals("your@email.com"))
-                    {
-                        MessageBox.Show("Nenhuma legenda encontrada para: '" + fileSearch + "'.\n\nCaso queira receber notificação via email quando a legenda estiver disponível, configure seu email em: 'Menu->Monitor->Configurar Email' e tente novamente.");
-                        return;
-                    }
-                    DialogResult dialogResult = MessageBox.Show("Nenhuma legenda encontrada para: '" + fileSearch + "'.\n\nGostaria de ser avisado por email (" + email + ") quando ela estiver disponível?\nObs: Você pode alterar o email em 'Menu->Monitor->Configurar Email' ", "Legendas.tv Monitor", MessageBoxButtons.YesNo);
-                    if (dialogResult == DialogResult.Yes)
-                    {
-                        using (WebClient webClient = new CustomWebClient())
-                        {
-                            webClient.Encoding = Encoding.UTF8;
-                            string url = "http://legendasws.darksupremo.com/monitor/add/" + Useful.Base64Encode(fileSearch) + "/" + email;
-                            string result = webClient.DownloadString(url);
-                            MessageBox.Show(result);
-                            Monitoramento m = new Monitoramento();
-                            m.ShowDialog();
-
-                        }
-                    }
-                    else if (dialogResult == DialogResult.No)
-                    {
-                        //do something else
-                    }
                     button1.Invoke(new Action(() => button1.Enabled = true));
                     button2.Invoke(new Action(() => button2.Enabled = true));
+                    MessageBox.Show("Nenhuma legenda encontrada para: '" + fileSearch + "'");
                     return;
                 }
 
@@ -183,8 +143,6 @@ namespace LegendasTvDownloader
 
                 button1.Invoke(new Action(() => button1.Enabled = true));
                 button2.Invoke(new Action(() => button2.Enabled = true));
-
-                //ShowMessage(html);
             }
             catch (System.InvalidOperationException)
             {
@@ -225,7 +183,6 @@ namespace LegendasTvDownloader
                 this.Invoke(new Action(() => this.Text = "Buscando legenda, aguarde..."));
                 try
                 {
-                    //String[] arguments = Environment.GetCommandLineArgs();
                     string file = "";//"helix.s01e12.720p.hdtv.x264-killers";
                     string title2 = "";
 
@@ -266,9 +223,6 @@ namespace LegendasTvDownloader
                     group = curFileName.Replace("-", ".");
                     group = group.Substring(group.LastIndexOf(".") + 1).ToLower();
 
-
-                    //Useful.subtitles sub = Useful.GetInfoSubtitles(curFullFileName);
-
                     bool isMovie = false;
 
                     // verificar primeiro se é seriado pois é verificação local, filme usa internet...
@@ -295,44 +249,12 @@ namespace LegendasTvDownloader
                     string hash = Useful.GetHash(curFullFileName);
 
                     List<Useful.legendas> list = LegendasWS.buscar_old(fileSearch, hash, 1, isMovie); 
-                        //LegendasTv.Buscar(fileSearch, !hide, 1);
-                    /*if (!list.Any())
-                    {
-                        if ((fileSearch = file.GetOriginalTitleImdb()) != "")
-                        {
-                            fileSearch = Regex.Replace(fileSearch, @"\s+", " "); // remover espaços duplos
-                            this.Invoke(new Action(() => this.Text = fileSearch));
-                            textBox1.Invoke(new Action(() => textBox1.Text = fileSearch));
-
-                            list = LegendasTv.Buscar(fileSearch, !hide, 1);
-                        }
-                    }*/
-                    //list.AddRange(LegendasBrasil.Buscar(sub.hash, false));
 
                     this.Invoke(new Action(() => this.Text = title2));
 
                     if (!list.Any())
                     {
-                        //ShowMessage("Nenhuma legenda encontrada para: " + file);
-                        if (email.Equals("your@email.com"))
-                        {
-                            MessageBox.Show("Nenhuma legenda encontrada para: '" + fileSearch + "'.\n\nCaso queira receber notificação via email quando a legenda estiver disponível, configure seu email em: 'Menu->Monitor->Configurar Email' e tente novamente.");
-                            return;
-                        }
-                        DialogResult dialogResult = MessageBox.Show("Nenhuma legenda encontrada para: '" + fileSearch + "'.\n\nGostaria de ser avisado por email (" + email + ") quando ela estiver disponível?\nObs: Você pode alterar o email em 'Menu->Monitor->Configurar Email' ", "Legendas.tv Monitor", MessageBoxButtons.YesNo);
-                        if (dialogResult == DialogResult.Yes)
-                        {
-                            using (WebClient webClient = new CustomWebClient())
-                            {
-                                webClient.Encoding = Encoding.UTF8;
-                                string url = "http://legendasws.darksupremo.com/monitor/add/" + Useful.Base64Encode(fileSearch) + "/" + email;
-                                string result = webClient.DownloadString(url);
-                                MessageBox.Show(result);
-                                Monitoramento m = new Monitoramento();
-                                m.ShowDialog();
-                                
-                            }
-                        }
+                        MessageBox.Show("Nenhuma legenda encontrada para: '" + fileSearch + "'");
                         Application.Exit();
                         return;
                     }
@@ -347,35 +269,18 @@ namespace LegendasTvDownloader
                     }
                     if (lgtv == false)
                     {
-                        if (email.Equals("your@email.com"))
-                        {
-                            MessageBox.Show("Nenhuma legenda (via Legendas.tv) encontrada para: '" + fileSearch + "'.\n\nCaso queira receber notificação via email quando a legenda estiver disponível (no legendas.tv), configure seu email em: 'Menu->Monitor->Configurar Email' e tente novamente.");
-                        }
-                        DialogResult dialogResult = MessageBox.Show("Nenhuma legenda (via Legendas.tv) encontrada para: '" + fileSearch + "'.\n\nGostaria de ser avisado por email (" + email + ") quando ela estiver disponível (via Legendas.tv)?\nObs: Você pode alterar o email em 'Menu->Monitor->Configurar Email' ", "Legendas.tv Monitor", MessageBoxButtons.YesNo);
-                        if (dialogResult == DialogResult.Yes)
-                        {
-                            using (WebClient webClient = new CustomWebClient())
-                            {
-                                webClient.Encoding = Encoding.UTF8;
-                                string url = "http://legendasws.darksupremo.com/monitor/add/" + Useful.Base64Encode(fileSearch) + "/" + email;
-                                string result = webClient.DownloadString(url);
-                                MessageBox.Show(result);
-                            }
-                        }
+                        MessageBox.Show("Nenhuma legenda (via Legendas.tv) encontrada para: '" + fileSearch + "'");
                     }
 
 
                     // carregar mais paginas
                     bool mais = list[list.Count - 1].maisPagina;
                     carregarMais.Visible = mais;
-
-                    // carregar foto e descrição
-                    //if (list[0].fotoUrl != "") {
+                    
                     pictureBox1.Invoke(new Action(() => pictureBox1.ImageLocation = list[0].fotoUrl));
                     description1.Invoke(new Action(() => description1.Text = list[0].descricao));
                     this.Invoke(new Action(() => this.Text = list[0].titulo));
-                    //}
-                    //ShowMessage("Resolution: " + resolution +"\nGroup: " + group);
+
                     bool perfect = false;
                     int resFound = 0;
                     bool legtv = false;
@@ -449,9 +354,6 @@ namespace LegendasTvDownloader
                     {
                         btn1Thread(locFullFileName);
                     }
-
-
-                    //ShowMessage(html);
                 }
                 catch (System.InvalidOperationException)
                 {
@@ -470,30 +372,17 @@ namespace LegendasTvDownloader
         public static int downCountPos = 0;
         public AsyncCompletedEventHandler DownloadFileCompleted(string filename, string locFullFileName, string locFileName)
         {
-
-            //ShowMessage("downCountPos: " + downCountPos + " / downCount:" + downCount);
             Action<object,AsyncCompletedEventArgs> action = (sender,e) =>
             {
                 downCountPos++;
                 var _filename = filename;
                 if (locFileName == "")
                 {
-                    //if (downCountPos == downCount)
-                    //{
-                    //    button1.Enabled = true;
-                    //    //ShowMessage("Baixado(s) com sucesso" + serviceName + "!");
-                    //}
                     return;
                 }
 
                 if (e.Error != null)
                 {
-                    //if (downCountPos == downCount)
-                    //{
-                    //    button1.Enabled = true;
-                    //    //ShowMessage("Baixado(s) com sucesso" + serviceName + "!");
-                    //}
-                    //throw e.Error;
                     return;
                 }
 
@@ -510,11 +399,11 @@ namespace LegendasTvDownloader
                             Console.WriteLine(theEntry.Name);
 
                             string directoryName = Path.GetDirectoryName(theEntry.Name);
-                            string fileName = theEntry.Name.ExtractFileName();
+                            string fileName = Path.GetFileNameWithoutExtension(theEntry.Name);
 
 
                             string curDir = Directory.GetCurrentDirectory();
-                            string path = curDir + "\\" + theEntry.Name.ExtractFileNameExt().RemoveAccents();
+                            string path = Path.Combine(curDir, Path.GetFileName(theEntry.Name).RemoveAccents());
 
                             if (fileName.Equals(locFileName, StringComparison.OrdinalIgnoreCase))
                             {
@@ -526,7 +415,7 @@ namespace LegendasTvDownloader
                                         int z = 1;
                                         do
                                         {
-                                            extractPath = curDir + "\\" + theEntry.Name.ExtractFileName().RemoveAccents() + "(" + z + ")" + Path.GetExtension(path);
+                                            extractPath = Path.Combine(curDir, (theEntry.Name.ExtractFileName().RemoveAccents() + "(" + z + ")" + Path.GetExtension(path)));
                                             z++;
                                         } while (File.Exists(extractPath));
 
@@ -563,26 +452,19 @@ namespace LegendasTvDownloader
                 }
                 else if (_filename.EndsWith(".rar".ToLower()))
                 {
-                    //ShowMessage("0");
                     FileStream fileStream = new FileStream(_filename, FileMode.Open, FileAccess.Read);
-                    //ShowMessage("1: " + _filename);
 
                     RarArchive archive = RarArchive.Open(fileStream, RarOptions.None);
                     string curDir = Directory.GetCurrentDirectory();
                     string curFileNameN = locFileName;
-                    //ShowMessage("2: " + curDir);
                     foreach (RarArchiveEntry entry in archive.Entries)
                     {
-                        //ShowMessage("3: " + entry.FilePath.ExtractFileNameExt());
-                        string path = curDir + "\\" + entry.FilePath.ExtractFileNameExt().RemoveAccents();//Path.Combine(curDir, entry.FilePath.ExtractFileNameExt());
-                        //ShowMessage("4: " + path);
+                        string path = Path.Combine(curDir, Path.GetFileName(entry.FilePath).RemoveAccents());
                         string tmp = entry.FilePath.ExtractFileName().RemoveAccents();
                         if (tmp == "")
                         {
                             continue;
                         }
-                        //ShowMessage(tmp);
-                        //ShowMessage("Comparando: \""+tmp+"\" com \""+curFileNameN+"\""); 
                         if (tmp.Equals(curFileNameN, StringComparison.OrdinalIgnoreCase))
                         {
                             string wpath = "";
@@ -594,7 +476,7 @@ namespace LegendasTvDownloader
                                     string tmp3 = "";
                                     do
                                     {
-                                        tmp3 = curDir + "\\" + entry.FilePath.ExtractFileName().RemoveAccents() + "(" + z + ")" + Path.GetExtension(path);
+                                        tmp3 = Path.Combine(curDir, (entry.FilePath.ExtractFileName().RemoveAccents() + "(" + z + ")" + Path.GetExtension(path)));
                                         z++;
                                     } while (File.Exists(tmp3));
                                     wpath = tmp3;
@@ -621,31 +503,26 @@ namespace LegendasTvDownloader
                             }
                             break;
                         }
-                        //entry.extr
                     }
                     fileStream.Close();
                 }
-                //if (hide)
-                //{
-                    lock (syncLock2)
+                lock (syncLock2)
+                {
+                    waiting--;
+                }
+                if (waiting == 0)
+                {
+                    ShowMessage("Baixado(s) com sucesso" + serviceName + "!");
+                    if (hide)
                     {
-                        waiting--;
+                        Application.Exit();
+                        return;
                     }
-                    if (waiting == 0)
-                    {
-                        ShowMessage("Baixado(s) com sucesso" + serviceName + "!");
-                        if (hide)
-                        {
-                            Application.Exit();
-                            return;
-                        }
-                    }
-                //}
+                }
                 if (downCountPos == downCount)
                 {
                     button1.Invoke(new Action(() => button1.Enabled = true));
                 }
-                //Application.Exit();
             };
             return new AsyncCompletedEventHandler(action);
         }
@@ -670,13 +547,12 @@ namespace LegendasTvDownloader
             }
             return result;
         }
-
-
-
+        
         public void btn1Thread()
         {
             btn1Thread("");
         }
+
         public void btn1Thread(String firName)
         {
             if (String.IsNullOrEmpty(Properties.Settings.Default.usuario) || String.IsNullOrEmpty(Properties.Settings.Default.senha))
@@ -715,9 +591,7 @@ namespace LegendasTvDownloader
                     return;
                 }
                 downCount = checkedListBox1.CheckedIndices.Count;
-
-
-
+                
                 foreach (int ic in checkedListBox1.CheckedIndices)
                 {
                     if (downCount == 1)
@@ -741,16 +615,8 @@ namespace LegendasTvDownloader
                             return;
                         }
                         webClient.CookieContainer = Useful.cookieLegendasTv;
-                        
-                        
-                        //MessageBox.Show(response.ToString());
 
                         string url = founds[ic].download;
-
-                        //string tst = webClient.
-                        //ShowMessage(tst);
-
-                       
 
                         var stream = webClient.OpenRead(url);
                         string filename = "teste.zip";
@@ -867,11 +733,15 @@ namespace LegendasTvDownloader
 
         private void label1_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("mailto:uilton.dev@gmail.com");
+            System.Diagnostics.Process.Start("http://www.uiltonsites.com.br");
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (textBox1.Text == "Digite aqui o que deseja buscar!")
+            {
+                return;
+            }
             checkedListBox1.Items.Clear();
             founds.Clear();
             pagina = 1;
@@ -995,23 +865,6 @@ namespace LegendasTvDownloader
                 e.Handled = true;
             }
 
-        }
-
-        private void configurarEmailToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            string value = email;
-            if (IDialog.InputBox("Email - Monitor", "Cadastre seu email para receber alerta avisando quando a consulta for encontrada", ref value) == DialogResult.OK)
-            {
-                email = value;
-                Properties.Settings.Default["email"] = email;
-                Properties.Settings.Default.Save();
-            }
-        }
-
-        private void exibirListaDeMonitoraçãoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Monitoramento m = new Monitoramento();
-            m.ShowDialog();
         }
 
         private void button4_Click(object sender, EventArgs e)
