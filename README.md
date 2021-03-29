@@ -2,7 +2,7 @@
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/DarkSupremo/LegendasTvDownloader.svg?maxAge=60&style=flat-square)](https://github.com/DarkSupremo/LegendasTvDownloader/pulls)
 [![Github Releases](https://img.shields.io/github/downloads/DarkSupremo/LegendasTvDownloader/total.svg?maxAge=60&style=flat-square)](https://github.com/DarkSupremo/LegendasTvDownloader/releases/latest)
 
-Legendas.Tv Downloader ( https://www.uiltonsites.com.br )
+Legendas.Tv Downloader
 ====================
 
 Descrição
