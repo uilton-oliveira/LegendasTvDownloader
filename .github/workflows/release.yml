@@ -22,8 +22,8 @@ jobs:
     - name: Prepare
       run: |
         mkdir dist
-        cp ./bin/Release/LegendasTv.exe ./dist
-        cp ./bin/Release/LegendasTv.exe.config ./dist
+        cp ./LegendasTvDownloader/bin/Release/LegendasTv.exe ./dist
+        cp ./LegendasTvDownloader/bin/Release/LegendasTv.exe.config ./dist
         zip -r ./dist/win_x64.zip ./dist/
       shell: bash
         
