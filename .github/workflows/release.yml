@@ -24,8 +24,11 @@ jobs:
         mkdir dist
         cp ./LegendasTvDownloader/bin/Release/LegendasTv.exe ./dist
         cp ./LegendasTvDownloader/bin/Release/LegendasTv.exe.config ./dist
-        zip -r ./dist/win_x64.zip ./dist/
       shell: bash
+      
+    - name: Zip archives
+      run: |
+        powershell Compress-Archive dist .\dist\win_x64.zip
         
     - name: Build Changelog
       id: github_release
