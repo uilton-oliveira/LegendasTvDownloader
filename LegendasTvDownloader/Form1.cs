@@ -9,13 +9,11 @@ using System.Threading;
 using System.Net.Mime;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
-using NUnrar.Archive;
-using NUnrar.Common;
 using System.IO;
 using System.Globalization;
 using ICSharpCode.SharpZipLib.Zip;
-
-
+using SharpCompress.Archives.Rar;
+using SharpCompress.Readers;
 
 namespace LegendasTvDownloader
 {
@@ -452,59 +450,53 @@ namespace LegendasTvDownloader
                 }
                 else if (_filename.EndsWith(".rar".ToLower()))
                 {
-                    FileStream fileStream = new FileStream(_filename, FileMode.Open, FileAccess.Read);
 
-                    RarArchive archive = RarArchive.Open(fileStream, RarOptions.None);
-                    string curDir = Directory.GetCurrentDirectory();
-                    string curFileNameN = locFileName;
-                    foreach (RarArchiveEntry entry in archive.Entries)
+                    using (Stream stream = File.OpenRead(_filename))
+                    using (var reader = ReaderFactory.Open(stream))
                     {
-                        string path = Path.Combine(curDir, Path.GetFileName(entry.FilePath).RemoveAccents());
-                        string tmp = entry.FilePath.ExtractFileName().RemoveAccents();
-                        if (tmp == "")
+                        string curDir = Directory.GetCurrentDirectory();
+                        string curFileNameN = locFileName;
+                        while (reader.MoveToNextEntry())
                         {
-                            continue;
-                        }
-                        if (tmp.Equals(curFileNameN, StringComparison.OrdinalIgnoreCase))
-                        {
-                            string wpath = "";
-                            try
+                            var entry = reader.Entry;
+                            string path = Path.Combine(curDir, Path.GetFileName(entry.Key).RemoveAccents());
+                            string tmp = entry.Key.ExtractFileName().RemoveAccents();
+                            if (tmp == "")
                             {
-                                if (File.Exists(path))
+                                continue;
+                            }
+                            if (tmp.Equals(curFileNameN, StringComparison.OrdinalIgnoreCase))
+                            {
+                                string wpath = "";
+                                try
                                 {
-                                    int z = 1;
-                                    string tmp3 = "";
-                                    do
+                                    if (File.Exists(path))
                                     {
-                                        tmp3 = Path.Combine(curDir, (entry.FilePath.ExtractFileName().RemoveAccents() + "(" + z + ")" + Path.GetExtension(path)));
-                                        z++;
-                                    } while (File.Exists(tmp3));
-                                    wpath = tmp3;
-                                    entry.WriteToFile(tmp3);
+                                        int z = 1;
+                                        string tmp3 = "";
+                                        do
+                                        {
+                                            tmp3 = Path.Combine(curDir, (entry.Key.ExtractFileName().RemoveAccents() + "(" + z + ")" + Path.GetExtension(path)));
+                                            z++;
+                                        } while (File.Exists(tmp3));
+                                        wpath = tmp3;
+                                        reader.WriteEntryToFile(tmp3);
+                                    }
+                                    else
+                                    {
+                                        wpath = path;
+                                        reader.WriteEntryToFile(path);
+                                    }
+                                    File.Delete(_filename);
                                 }
-                                else
+                                catch (Exception ex)
                                 {
-                                    wpath = path;
-                                    entry.WriteToFile(path);
+                                    ShowMessage(ex.ToString());
                                 }
-                                fileStream.Close();
-                                File.Delete(_filename);
+                                break;
                             }
-                            catch (NUnrar.InvalidRarFormatException)
-                            {
-                                if (wpath != "")
-                                {
-                                    File.Delete(wpath);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                ShowMessage(ex.ToString());
-                            }
-                            break;
                         }
                     }
-                    fileStream.Close();
                 }
                 lock (syncLock2)
                 {
