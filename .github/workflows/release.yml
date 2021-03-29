@@ -10,9 +10,45 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
     
     - name: Build
-      run: msbuild.exe -t:restore LegendasTv.sln 
+      run: msbuild.exe -p:Platform=x64 -p:Configuration=Release /restore 
+    
+    - name: Prepare
+      run: |
+        mkdir dist
+        cp ./bin/Release/LegendasTv.exe ./dist
+        cp ./bin/Release/LegendasTv.exe.config ./dist
+        zip -r ./dist/win_x64.zip ./dist/
+      shell: bash
+        
+    - name: Build Changelog
+      id: github_release
+      uses: mikepenz/release-changelog-builder-action@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      shell: bash
+    
+    - name: Get short SHA
+      id: slug
+      run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
+      shell: bash
+        
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        body: ${{ steps.github_release.outputs.changelog }}
+        tag_name: v${{ steps.date.outputs.date }}-${{ steps.slug.outputs.sha8 }}
+        files: |
+          dist\win_x64.zip
