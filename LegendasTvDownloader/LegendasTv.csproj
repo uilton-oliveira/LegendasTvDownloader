@@ -153,7 +153,7 @@
       <Version>13.0.1</Version>
     </PackageReference>
     <PackageReference Include="SharpCompress">
-      <Version>0.28.2</Version>
+      <Version>0.28.3</Version>
     </PackageReference>
     <PackageReference Include="System.Resources.Extensions">
       <Version>5.0.0</Version>
