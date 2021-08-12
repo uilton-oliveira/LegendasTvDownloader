@@ -15,7 +15,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Readers;
 
-namespace LegendasTvDownloader
+namespace LegendasTv
 {
     public partial class Form1 : Form
     {
@@ -93,7 +93,7 @@ namespace LegendasTvDownloader
                     }
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
         }
 
         public void ManualThread()
@@ -597,8 +597,6 @@ namespace LegendasTvDownloader
 
                     using (CustomWebClient webClient = new CustomWebClient())
                     {
-                        byte[] response = null;
-
                         if (String.IsNullOrEmpty(Properties.Settings.Default.usuario)
                             || String.IsNullOrEmpty(Properties.Settings.Default.senha)
                             || Useful.cookieLegendasTv == null)

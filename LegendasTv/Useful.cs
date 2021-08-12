@@ -6,7 +6,7 @@ using System.IO;
 using System.Net;
 using System.Collections.Specialized;
 
-namespace LegendasTvDownloader
+namespace LegendasTv
 {
     public static class Useful
     {

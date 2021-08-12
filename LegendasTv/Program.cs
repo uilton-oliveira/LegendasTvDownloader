@@ -1,10 +1,12 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Microsoft.VisualBasic.ApplicationServices;
 
-namespace LegendasTvDownloader
+namespace LegendasTv
 {
     static class Program
     {
@@ -12,6 +14,7 @@ namespace LegendasTvDownloader
         [STAThread]
         static void Main(params string[] Arguments)
         {
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MainForm = new Form1();

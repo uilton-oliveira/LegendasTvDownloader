@@ -16,19 +16,21 @@ jobs:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
     
-    - name: Build
-      run: msbuild.exe -p:Platform=x64 -p:Configuration=Release /restore 
+    - name: Build x64
+      run: dotnet publish -p:Configuration=Release -r win-x64 -o dist_x64 --self-contained false /restore
     
+    - name: Build x86
+      run: dotnet publish -p:Configuration=Release -r win-x86 -o dist_x86 --self-contained false /restore 
+
     - name: Prepare
       run: |
         mkdir dist
-        cp ./LegendasTvDownloader/bin/Release/LegendasTv.exe ./dist
-        cp ./LegendasTvDownloader/bin/Release/LegendasTv.exe.config ./dist
       shell: bash
       
     - name: Zip archives
       run: |
-        powershell Compress-Archive dist .\dist\win_x64.zip
+        powershell Compress-Archive dist_x64 .\dist\win_x64.zip
+        powershell Compress-Archive dist_x86 .\dist\win_x86.zip
         
     - name: Build Changelog
       id: github_release
@@ -55,3 +57,4 @@ jobs:
         tag_name: v${{ steps.date.outputs.date }}-${{ steps.slug.outputs.sha8 }}
         files: |
           dist\win_x64.zip
+          dist\win_x86.zip
