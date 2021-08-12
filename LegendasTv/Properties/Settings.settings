@@ -2,13 +2,13 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="LegendasTv.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="email" Type="System.String" Scope="Application">
+    <Setting Name="email" Type="System.String" Scope="User">
+      <Value Profile="(Default)">your@email.com</Value>
+    </Setting>
+    <Setting Name="usuario" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="usuario" Type="System.String" Scope="Application">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="senha" Type="System.String" Scope="Application">
+    <Setting Name="senha" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

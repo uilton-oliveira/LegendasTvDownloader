@@ -8,6 +8,7 @@
     <StartupObject>LegendasTv.Program</StartupObject>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Win32Resource />
+    <PublishSingleFile>true</PublishSingleFile>
   </PropertyGroup>
 
   <ItemGroup>
