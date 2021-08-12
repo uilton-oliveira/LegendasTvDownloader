@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace LegendasTvDownloader
+namespace LegendasTv
 {
     public class CustomWebClient : WebClient
     {

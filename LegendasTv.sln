@@ -1,22 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendasTv", "LegendasTvDownloader\LegendasTv.csproj", "{8E1873D6-1071-41DB-978F-752BC0BDF01F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendasTv", "LegendasTv\LegendasTv.csproj", "{D7705766-BE93-462E-94BD-D5393677325C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
-		Release|x64 = Release|x64
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8E1873D6-1071-41DB-978F-752BC0BDF01F}.Debug|x64.ActiveCfg = Debug|x64
-		{8E1873D6-1071-41DB-978F-752BC0BDF01F}.Debug|x64.Build.0 = Debug|x64
-		{8E1873D6-1071-41DB-978F-752BC0BDF01F}.Release|x64.ActiveCfg = Release|x64
-		{8E1873D6-1071-41DB-978F-752BC0BDF01F}.Release|x64.Build.0 = Release|x64
+		{D7705766-BE93-462E-94BD-D5393677325C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7705766-BE93-462E-94BD-D5393677325C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7705766-BE93-462E-94BD-D5393677325C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7705766-BE93-462E-94BD-D5393677325C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6FA2CE00-B118-47E3-BDBD-6133542C8D48}
 	EndGlobalSection
 EndGlobal

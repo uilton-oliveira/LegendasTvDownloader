@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace LegendasTvDownloader
+namespace LegendasTv
 {
     public partial class Login : Form
     {

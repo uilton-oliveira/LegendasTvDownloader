@@ -1,4 +1,4 @@
-﻿namespace LegendasTvDownloader
+﻿namespace LegendasTv
 {
     partial class Form1
     {
@@ -82,7 +82,7 @@
             // 
             this.button4.FlatAppearance.BorderSize = 0;
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Image = global::LegendasTvDownloader.Properties.Resources.download_icon;
+            this.button4.Image = global::LegendasTv.Properties.Resources.download_icon;
             this.button4.Location = new System.Drawing.Point(757, 2);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(21, 23);
@@ -201,7 +201,7 @@
             // 
             this.button3.FlatAppearance.BorderSize = 0;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Image = global::LegendasTvDownloader.Properties.Resources.download_icon;
+            this.button3.Image = global::LegendasTv.Properties.Resources.download_icon;
             this.button3.Location = new System.Drawing.Point(195, 26);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(17, 18);
